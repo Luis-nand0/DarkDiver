@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="124">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="128">
  <editorsettings>
   <export target="mapa_teste.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="tilesset" tilewidth="32" tileheight="32" tilecount="120" columns="8">
-  <image source="../../../DarkDriver/maps/tilesset.png" width="256" height="480"/>
+  <image source="tilesset.png" width="256" height="480"/>
  </tileset>
  <layer id="2" name="fundo" width="50" height="50">
   <data encoding="csv">
@@ -230,5 +230,11 @@
   <object id="121" x="0" y="0">
    <polygon points="941.576,775.636 993.576,807.636 989.576,907.636 926.909,977.636"/>
   </object>
+ </objectgroup>
+ <objectgroup id="5" name="borders">
+  <object id="124" x="1599" y="0" width="108" height="1600"/>
+  <object id="125" x="-2" y="1599" width="1708" height="91"/>
+  <object id="126" x="-89.6364" y="-3.0303" width="90.9091" height="1681.82"/>
+  <object id="127" x="-80" y="-120" width="1776" height="120"/>
  </objectgroup>
 </map>
