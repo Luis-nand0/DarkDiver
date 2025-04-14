@@ -1,77 +1,77 @@
--- Biblioteca para carregar tiled
+-- fase.lua
 local sti = require "libs.sti"
--- Biblioteca para colisões
-local wf = require "libs.windfield"
--- Biblioteca cameras
+local bump = require "libs.bump"
 local Camera = require "libs.hump.camera"
--- Utils com funções úteis
 local utils = require "utils"
--- Módulo do player
 local Player = require "player"
+local Blocos = require "blocos"
 
 local Fase = {}
-
--- Variáveis principais
 local cam = Camera()
-local world
-local mapa
+local world, mapa
 
 function Fase.load()
-    -- Criar mundo de física
-    world = wf.newWorld(0, 800, true)
-    world:setQueryDebugDrawing(true)
+    -- Cria mundo de colisão
+    world = bump.newWorld(32)
+    
+    -- Carrega mapa
+    mapa = sti("maps/mapa_teste.lua", { "bump" })
+    mapa:resize()
 
-    -- Carregar o mapa
-    mapa = sti("maps/mapa_teste.lua")
+    -- 💡 Carrega blocos especiais ANTES de apagar as camadas
+    Blocos.carregar(world, mapa)
 
-    -- Adicionar colisores do mapa
-    if mapa.layers["Walls"] then
-        mapa.layers["Walls"].visible = false
-        utils.carregarColisores(mapa.layers["Walls"], world)
+    -- Agora sim, remova se quiser evitar duplicação
+   
+
+    -- Carrega colisões básicas
+    mapa:bump_init(world)
+
+    -- Oculta camadas de colisão
+    for _, nome in ipairs({ "Walls", "borders", "colisores" }) do
+        if mapa.layers[nome] then
+            mapa.layers[nome].visible = false
+        end
     end
 
-    if mapa.layers["borders"] then
-        mapa.layers["borders"].visible = false
-        utils.carregarColisores(mapa.layers["borders"], world)
-    end
-
-    -- Iniciar jogador
+    -- Cria jogador
     Player:load(world, 100, 100)
 end
 
+
 function Fase.update(dt)
-    world:update(dt)
     mapa:update(dt)
     Player:update(dt)
-
-    -- Pega posição do player para a câmera
+    
+    -- Atualiza câmera
     local px, py = Player:getPosition()
-
-    -- Tamanho do mapa
     local mapWidth = mapa.width * mapa.tilewidth
     local mapHeight = mapa.height * mapa.tileheight
-
-    -- Tamanho da janela
-    local screenWidth = love.graphics.getWidth()
-    local screenHeight = love.graphics.getHeight()
-
-    utils.limitarCamera(cam, px, py, mapWidth, mapHeight, screenWidth, screenHeight)
+    utils.limitarCamera(
+        cam, 
+        px, 
+        py, 
+        mapWidth, 
+        mapHeight, 
+        love.graphics.getWidth(), 
+        love.graphics.getHeight()
+    )
 end
 
 function Fase.draw()
     cam:attach()
-
-    -- Desenhar camadas visíveis
-    mapa:drawLayer(mapa.layers["fundo"])
-    mapa:drawLayer(mapa.layers["detalhes"])
-    mapa:drawLayer(mapa.layers["Camada de Blocos 1"])
-
-    -- Desenhar jogador
-    Player:draw()
-
+        -- Desenha camadas visuais
+        for _, nome in ipairs({ "fundo", "detalhes", "Camada de Blocos 1" }) do
+            if mapa.layers[nome] then
+                mapa:drawLayer(mapa.layers[nome])
+            end
+        end
+        
+        Player:draw()
+        
+        -- Debug (opcional)
+        -- require("libs.bump-debug").draw(world)
     cam:detach()
-
-
 end
 
 return Fase

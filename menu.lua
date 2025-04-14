@@ -22,11 +22,7 @@ function Menu.update(dt, gameState)
         gameState.current = "fase"
     end
 
-    -- Fase 2
-    if suit.Button("Fase 2", {id = 3}, btnX, btnY - 60, btnW, btnH).hit then
-        gameState.current = "fase2"
-    end
-
+   
     -- sair
     if suit.Button("Sair", {id = 2}, btnX, btnY + 60, btnW, btnH).hit then
         love.event.quit()
