@@ -1,30 +1,28 @@
--- Biblioteca do Menu 
 local suit = require "libs.suit"
-
 local Menu = {}
 
 function Menu.load()
- 
 end
 
+-- dt: delta time
+-- changeState: function(newState:string)
+function Menu.update(dt, changeState)
+    local w, h = love.graphics.getDimensions()
+    local bw, bh = 200, 40
+    local bx, by = (w - bw) / 2, h / 2
 
-function Menu.update(dt, gameState)
-
-    local largura, altura = love.graphics.getDimensions()
-
-    -- Definindo local do menu
-    local btnW, btnH = 200, 40
-    local btnX = (largura - btnW) / 2
-    local btnY = altura / 2
-
-    -- iniciar fase
-    if suit.Button("Jogar", {id = 1}, btnX, btnY, btnW, btnH).hit then
-        gameState.current = "fase"
+    -- Primeira Fase
+    if suit.Button("Primeira Fase", bx, by - 60, bw, bh).hit then
+        changeState("primeira_fase")
     end
 
-   
-    -- sair
-    if suit.Button("Sair", {id = 2}, btnX, btnY + 60, btnW, btnH).hit then
+    -- Jogar (fase principal)
+    if suit.Button("Jogar", bx, by, bw, bh).hit then
+        changeState("fase")
+    end
+
+    -- Sair
+    if suit.Button("Sair", bx, by + 60, bw, bh).hit then
         love.event.quit()
     end
 end
