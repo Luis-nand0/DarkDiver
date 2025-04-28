@@ -1,15 +1,15 @@
 local Sentinela = {}
 Sentinela.__index = Sentinela
 
-function Sentinela.new(x, y)
+function Sentinela.new(x, y, properties)
     local self = setmetatable({}, Sentinela)
     self.x, self.y = x, y
     self.w, self.h = 32, 32
-    self.vx = 60
-    self.range = 200
+    self.vx = (properties and properties.speed) or 60 -- velocidade vinda do Tiled, se tiver
+    self.range = (properties and properties.range) or 200
     self.direcao = 1
-    self.patrolMin = x - 64
-    self.patrolMax = x + 64
+    self.patrolMin = x - ((properties and properties.patrolDistance) or 64)
+    self.patrolMax = x + ((properties and properties.patrolDistance) or 64)
     self.cooldown = 0
     self.bullets = {}
     return self
@@ -21,7 +21,7 @@ function Sentinela:load(world)
 end
 
 function Sentinela:update(dt, player)
-    -- Movimento lateral entre patrolMin e patrolMax
+    -- Movimento lateral
     self.x = self.x + self.vx * dt * self.direcao
     if self.x < self.patrolMin then
         self.x = self.patrolMin
@@ -32,7 +32,7 @@ function Sentinela:update(dt, player)
     end
     self.world:move(self, self.x, self.y)
 
-    -- Verifica se o jogador está na área de tiro
+    -- Área de tiro
     local px, py = player:getPosition()
     local dx = px - (self.x + self.w / 2)
     local dy = py - (self.y + self.h / 2)
@@ -49,7 +49,7 @@ function Sentinela:update(dt, player)
         self.cooldown = 2
     end
 
-    -- Atualiza projéteis
+    -- Atualiza balas
     for i = #self.bullets, 1, -1 do
         local b = self.bullets[i]
         b.x = b.x + b.vx * dt
