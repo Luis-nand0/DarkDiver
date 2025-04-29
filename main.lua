@@ -1,10 +1,10 @@
 local menu          = require "menu"
 local primeira_fase = require "primeira_fase"
-local fase          = require "fase"
+local segunda_fase  = require "segunda_fase"
 local menu_respawn  = require "menu_respawn"
 local gameOverMenu  = require "GameOverMenu"
 
--- Estado principal: "menu", "primeira_fase", "fase"
+-- Estado principal: "menu", "primeira_fase", "segunda_fase"
 local gameState = "menu"
 -- Overlay ativo: nil, "respawn" ou "gameover"
 local overlay = nil
@@ -13,9 +13,11 @@ local lastPhase = nil
 
 -- Buffer para detectar tecla “R”
 local keyBuffer = {}
+
 function love.keypressed(key)
     keyBuffer[key] = true
 end
+
 function love.keyboard.wasPressed(key)
     if keyBuffer[key] then
         keyBuffer[key] = false
@@ -27,7 +29,7 @@ end
 function love.load()
     menu.load()
     primeira_fase.load()
-    fase.load()
+    segunda_fase.load()
     menu_respawn.load()
     gameOverMenu.load()
 end
@@ -42,22 +44,23 @@ function love.update(dt)
                     primeira_fase.load()
                     gameState = "primeira_fase"
                 else
-                    fase.load()
-                    gameState = "fase"
+                    segunda_fase.load()
+                    gameState = "segunda_fase"
                 end
             else
                 gameState = "menu"
             end
         end)
         return
+
     elseif overlay == "respawn" then
         menu_respawn.update(dt, function(confirm)
             overlay = nil
             if confirm then
                 if gameState == "primeira_fase" then
                     primeira_fase.load()
-                else
-                    fase.load()
+                elseif gameState == "segunda_fase" then
+                    segunda_fase.load()
                 end
             end
         end)
@@ -82,14 +85,14 @@ function love.update(dt)
             lastPhase = "primeira_fase"
             overlay = "gameover"
         elseif status == "exit" then
-            fase.load()
-            gameState = "fase"
+            segunda_fase.load()
+            gameState = "segunda_fase"
         end
 
-    elseif gameState == "fase" then
-        local status = fase.update(dt)
+    elseif gameState == "segunda_fase" then
+        local status = segunda_fase.update(dt)
         if status == "dead" then
-            lastPhase = "fase"
+            lastPhase = "segunda_fase"
             overlay = "gameover"
         elseif status == "exit" then
             gameState = "menu"
@@ -102,8 +105,8 @@ function love.draw()
         menu.draw()
     elseif gameState == "primeira_fase" then
         primeira_fase.draw()
-    elseif gameState == "fase" then
-        fase.draw()
+    elseif gameState == "segunda_fase" then
+        segunda_fase.draw()
     end
 
     if overlay == "respawn" then

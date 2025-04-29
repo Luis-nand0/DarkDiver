@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="75" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="464">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="75" tilewidth="32" tileheight="32" infinite="0" nextlayerid="17" nextobjectid="466">
  <editorsettings>
   <export target="primeira_fase.lua" format="lua"/>
  </editorsettings>
@@ -46,6 +46,9 @@
  </tileset>
  <tileset firstgid="3673" name="fase1" tilewidth="32" tileheight="32" tilecount="506" columns="23">
   <image source="fase1.jpeg" width="744" height="715"/>
+ </tileset>
+ <tileset firstgid="4179" name="bolhas" tilewidth="32" tileheight="32" tilecount="1536" columns="48">
+  <image source="Bolhas.png" width="1536" height="1024"/>
  </tileset>
  <layer id="10" name="fundo" width="60" height="75">
   <data encoding="csv">
@@ -793,6 +796,11 @@
     <property name="isExit" type="bool" value="true"/>
    </properties>
   </object>
+  <object id="465" x="1665" y="2195.5" width="188.5" height="204">
+   <properties>
+    <property name="isExit" type="bool" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="15" name="enemies">
   <object id="400" x="1337.33" y="1680" width="58.6667" height="60">
@@ -837,7 +845,14 @@
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="432" name="Caranguejo" x="847.576" y="102.121" width="52" height="48">
+  <object id="432" name="Caranguejo" x="679.576" y="150.121" width="52" height="48">
+   <properties>
+    <property name="detectionRadius" type="int" value="250"/>
+    <property name="isCaranguejo" type="bool" value="true"/>
+    <property name="speed" type="int" value="50"/>
+   </properties>
+  </object>
+  <object id="464" name="Caranguejo" x="679.576" y="150.121" width="52" height="48">
    <properties>
     <property name="detectionRadius" type="int" value="250"/>
     <property name="isCaranguejo" type="bool" value="true"/>
@@ -856,7 +871,6 @@
   <object id="389" name="playerSpawn" x="26.3636" y="2057.03" width="85.3333" height="74.6667"/>
  </objectgroup>
  <objectgroup id="3" name="borders_fase1">
-  <object id="101" x="-772" y="468"/>
   <object id="127" x="-248" y="-32" width="248" height="2448">
    <properties>
     <property name="collidable" type="bool" value="true"/>
