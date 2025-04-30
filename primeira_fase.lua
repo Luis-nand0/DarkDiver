@@ -9,6 +9,7 @@ local Enemy      = require "enemy"
 local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
+local pontos = require "pontos"
 
 local primeira_fase = {}
 local cam = Camera()
@@ -35,7 +36,7 @@ function primeira_fase.load()
   world = bump.newWorld(32)
   mapa  = sti("maps/primeira_fase.lua", { "bump" })
   mapa:resize()
-
+  pontos.reset()
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
 

@@ -3,7 +3,7 @@ local primeira_fase = require "primeira_fase"
 local segunda_fase  = require "segunda_fase"
 local menu_respawn  = require "menu_respawn"
 local gameOverMenu  = require "GameOverMenu"
-
+local Pontos = require("pontos")
 -- Estado principal: "menu", "primeira_fase", "segunda_fase"
 local gameState = "menu"
 -- Overlay ativo: nil, "respawn" ou "gameover"
@@ -13,6 +13,9 @@ local lastPhase = nil
 
 -- Buffer para detectar tecla “R”
 local keyBuffer = {}
+
+--Fonte padrao
+local fontePadrao = love.graphics.newFont(14)
 
 function love.keypressed(key)
     keyBuffer[key] = true
@@ -32,6 +35,8 @@ function love.load()
     segunda_fase.load()
     menu_respawn.load()
     gameOverMenu.load()
+    --Fonte para os pontos
+    FontToPontos = love.graphics.newFont(32)
 end
 
 function love.update(dt)
@@ -105,8 +110,14 @@ function love.draw()
         menu.draw()
     elseif gameState == "primeira_fase" then
         primeira_fase.draw()
+        love.graphics.setFont(FontToPontos)
+        love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
+        love.graphics.setFont(fontePadrao)
     elseif gameState == "segunda_fase" then
         segunda_fase.draw() 
+        love.graphics.setFont(FontToPontos)
+        love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
+        love.graphics.setFont(fontePadrao)
     end
 
     if overlay == "respawn" then
