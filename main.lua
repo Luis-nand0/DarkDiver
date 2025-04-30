@@ -106,7 +106,7 @@ function love.draw()
     elseif gameState == "primeira_fase" then
         primeira_fase.draw()
     elseif gameState == "segunda_fase" then
-        segunda_fase.draw()
+        segunda_fase.draw() 
     end
 
     if overlay == "respawn" then
