@@ -3,7 +3,8 @@ local primeira_fase = require "primeira_fase"
 local segunda_fase  = require "segunda_fase"
 local menu_respawn  = require "menu_respawn"
 local gameOverMenu  = require "GameOverMenu"
-local Pontos = require("pontos")
+local Pontos        = require "pontos"
+
 -- Estado principal: "menu", "primeira_fase", "segunda_fase"
 local gameState = "menu"
 -- Overlay ativo: nil, "respawn" ou "gameover"
@@ -30,6 +31,7 @@ function love.keyboard.wasPressed(key)
 end
 
 function love.load()
+    love.window.setMode(0, 0, { fullscreen = true }) 
     menu.load()
     primeira_fase.load()
     segunda_fase.load()
@@ -60,20 +62,22 @@ function love.update(dt)
 
     elseif overlay == "respawn" then
         menu_respawn.update(dt, function(confirm)
-            overlay = nil
-            if confirm then
+            if confirm == true then
                 if gameState == "primeira_fase" then
                     primeira_fase.load()
                 elseif gameState == "segunda_fase" then
                     segunda_fase.load()
                 end
+                overlay = nil
+            elseif confirm == "resume" then
+                overlay = nil
             end
         end)
         return
     end
 
     -- Atalho R para respawn manual
-    if love.keyboard.wasPressed("r") and gameState ~= "menu" then
+    if love.keyboard.wasPressed("escape") and gameState ~= "menu" then
         overlay = "respawn"
         return
     end

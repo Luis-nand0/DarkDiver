@@ -4,59 +4,79 @@ Sentinela.__index = Sentinela
 function Sentinela.new(x, y, properties)
     local self = setmetatable({}, Sentinela)
     self.x, self.y = x, y
-    self.w, self.h = 32, 32
-    self.vx = (properties and properties.speed) or 60 -- velocidade vinda do Tiled, se tiver
+    self.w, self.h = 64, 64
     self.range = (properties and properties.range) or 200
-    self.direcao = 1
-    self.patrolMin = x - ((properties and properties.patrolDistance) or 64)
-    self.patrolMax = x + ((properties and properties.patrolDistance) or 64)
     self.cooldown = 0
     self.bullets = {}
+    self.animTimer = 0
+    self.animFrame = 1
+    self.bulletFrameIndex = 1
     return self
 end
 
 function Sentinela:load(world)
     self.world = world
     world:add(self, self.x, self.y, self.w, self.h)
+
+    self.sprite = love.graphics.newImage("Spritesheets/sentinela_spritesheet.png")
+    self.frames = {
+        love.graphics.newQuad(0, 0, 64, 64, self.sprite),
+        love.graphics.newQuad(64, 0, 64, 64, self.sprite)
+    }
+
+    self.bulletSprite = love.graphics.newImage("Spritesheets/municao_spritesheet.png")
+    local sw, sh = self.bulletSprite:getDimensions()
+    self.bulletFrames = {}
+    for i = 0, 3 do
+        table.insert(self.bulletFrames, love.graphics.newQuad(i * 64, 0, 64, 64, sw, sh))
+    end
 end
 
 function Sentinela:update(dt, player)
-    -- Movimento lateral
-    self.x = self.x + self.vx * dt * self.direcao
-    if self.x < self.patrolMin then
-        self.x = self.patrolMin
-        self.direcao = 1
-    elseif self.x > self.patrolMax then
-        self.x = self.patrolMax
-        self.direcao = -1
+    self.animTimer = self.animTimer + dt
+    if self.animTimer >= 0.5 then
+        self.animTimer = 0
+        self.animFrame = self.animFrame % 2 + 1
     end
-    self.world:move(self, self.x, self.y)
 
-    -- Área de tiro
     local px, py = player:getPosition()
+    local pw, ph = player.w or 64, player.h or 64
     local dx = px - (self.x + self.w / 2)
     local dy = py - (self.y + self.h / 2)
     local dist = math.sqrt(dx * dx + dy * dy)
 
     self.cooldown = self.cooldown - dt
     if dist < self.range and self.cooldown <= 0 then
+        local frameIndex = self.bulletFrameIndex
+        self.bulletFrameIndex = self.bulletFrameIndex % #self.bulletFrames + 1
+
         table.insert(self.bullets, {
-            x = self.x + self.w / 2,
-            y = self.y + self.h / 2,
+            x = self.x + self.w / 2 - 32,
+            y = self.y + self.h / 2 - 32,
             vx = dx / dist * 300,
-            vy = dy / dist * 300
+            vy = dy / dist * 300,
+            frame = frameIndex
         })
         self.cooldown = 2
     end
 
-    -- Atualiza balas
     for i = #self.bullets, 1, -1 do
         local b = self.bullets[i]
         b.x = b.x + b.vx * dt
         b.y = b.y + b.vy * dt
-        if math.abs(b.x - px) < 10 and math.abs(b.y - py) < 10 then
+
+        -- Hitbox menor e centralizada (16x16 dentro do sprite 64x64)
+        local bw, bh = 16, 16
+        local bx = b.x + (64 - bw) / 1.5
+        local by = b.y + (64 - bh) / 1.5
+
+        if bx < px + pw and
+           bx + bw > px and
+           by < py + ph and
+           by + bh > py then
             player.dead = true
         end
+
         if b.x < 0 or b.y < 0 or b.x > 2000 or b.y > 2000 then
             table.remove(self.bullets, i)
         end
@@ -64,13 +84,12 @@ function Sentinela:update(dt, player)
 end
 
 function Sentinela:draw()
-    love.graphics.setColor(1, 0.4, 0.1)
-    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
-    love.graphics.setColor(1, 1, 0)
-    for _, b in ipairs(self.bullets) do
-        love.graphics.circle("fill", b.x, b.y, 8)
-    end
     love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(self.sprite, self.frames[self.animFrame], self.x, self.y)
+
+    for _, b in ipairs(self.bullets) do
+        love.graphics.draw(self.bulletSprite, self.bulletFrames[b.frame], b.x, b.y)
+    end
 end
 
 return Sentinela

@@ -22,6 +22,11 @@ function gameOverMenu.update(dt, callback)
     if suit.Button("Reiniciar", btnX, btnY, btnW, btnH).hit then
         if confirmCallback then confirmCallback(true) end
     end
+
+    -- Detecta se o jogador apertou "espaço"
+    if love.keyboard.isDown("space") then
+        if confirmCallback then confirmCallback(true) end
+    end
 end
 
 function gameOverMenu.draw()
