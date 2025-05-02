@@ -4,7 +4,7 @@ Sentinela.__index = Sentinela
 function Sentinela.new(x, y, properties)
     local self = setmetatable({}, Sentinela)
     self.x, self.y = x, y
-    self.w, self.h = 64, 64
+    self.w, self.h = 32, 32  -- hitbox reduzida
     self.range = (properties and properties.range) or 200
     self.cooldown = 0
     self.bullets = {}
@@ -51,8 +51,8 @@ function Sentinela:update(dt, player)
         self.bulletFrameIndex = self.bulletFrameIndex % #self.bulletFrames + 1
 
         table.insert(self.bullets, {
-            x = self.x + self.w / 2 - 32,
-            y = self.y + self.h / 2 - 32,
+            x = self.x + self.w / 2,
+            y = self.y + self.h / 2,
             vx = dx / dist * 300,
             vy = dy / dist * 300,
             frame = frameIndex
@@ -65,10 +65,10 @@ function Sentinela:update(dt, player)
         b.x = b.x + b.vx * dt
         b.y = b.y + b.vy * dt
 
-        -- Hitbox menor e centralizada (16x16 dentro do sprite 64x64)
+        -- Hitbox reduzida e centralizada no tiro (16x16)
         local bw, bh = 16, 16
-        local bx = b.x + (64 - bw) / 1.5
-        local by = b.y + (64 - bh) / 1.5
+        local bx = b.x + (64 - bw) / 2
+        local by = b.y + (64 - bh) / 2
 
         if bx < px + pw and
            bx + bw > px and
@@ -85,7 +85,13 @@ end
 
 function Sentinela:draw()
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(self.sprite, self.frames[self.animFrame], self.x, self.y)
+    -- Desenha sprite centralizada na hitbox 32x32
+    love.graphics.draw(
+        self.sprite,
+        self.frames[self.animFrame],
+        self.x - (64 - self.w) / 2,
+        self.y - (64 - self.h) / 2
+    )
 
     for _, b in ipairs(self.bullets) do
         love.graphics.draw(self.bulletSprite, self.bulletFrames[b.frame], b.x, b.y)

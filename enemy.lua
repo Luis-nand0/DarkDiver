@@ -10,7 +10,7 @@ function Enemy.new(world, x, y, props)
     self.h = props.height or 32
     self.speed           = props.speed           or 120
     self.detectionRadius = props.detectionRadius or 200
-    self.chasing         = false
+    self.chasing = false
 
     -- adiciona no world do bump
     world:add(self, self.x, self.y, self.w, self.h)

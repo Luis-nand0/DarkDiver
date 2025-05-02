@@ -1,21 +1,22 @@
 local menu          = require "menu"
 local primeira_fase = require "primeira_fase"
 local segunda_fase  = require "segunda_fase"
+local terceira_fase = require "terceira_fase"
 local menu_respawn  = require "menu_respawn"
 local gameOverMenu  = require "GameOverMenu"
 local Pontos        = require "pontos"
 
--- Estado principal: "menu", "primeira_fase", "segunda_fase"
+-- Estado principal: "menu", "primeira_fase", "segunda_fase", "terceira_fase"
 local gameState = "menu"
 -- Overlay ativo: nil, "respawn" ou "gameover"
 local overlay = nil
 -- Em qual fase o jogador morreu
 local lastPhase = nil
 
--- Buffer para detectar tecla “R”
+-- Buffer para detectar teclas
 local keyBuffer = {}
 
---Fonte padrao
+--Fonte padrão
 local fontePadrao = love.graphics.newFont(14)
 
 function love.keypressed(key)
@@ -30,19 +31,30 @@ function love.keyboard.wasPressed(key)
     return false
 end
 
+function love.mousepressed(x, y, button)
+    if overlay == nil then
+        if gameState == "primeira_fase" and primeira_fase.mousepressed then
+            primeira_fase.mousepressed(x, y, button)
+        elseif gameState == "segunda_fase" and segunda_fase.mousepressed then
+            segunda_fase.mousepressed(x, y, button)
+        elseif gameState == "terceira_fase" and terceira_fase.mousepressed then
+            terceira_fase.mousepressed(x, y, button)
+        end
+    end
+end
+
 function love.load()
     love.window.setMode(0, 0, { fullscreen = true }) 
     menu.load()
     primeira_fase.load()
     segunda_fase.load()
+    terceira_fase.load()
     menu_respawn.load()
     gameOverMenu.load()
-    --Fonte para os pontos
     FontToPontos = love.graphics.newFont(32)
 end
 
 function love.update(dt)
-    -- Se um overlay estiver ativo, só processa ele
     if overlay == "gameover" then
         gameOverMenu.update(dt, function(restart)
             overlay = nil
@@ -50,9 +62,12 @@ function love.update(dt)
                 if lastPhase == "primeira_fase" then
                     primeira_fase.load()
                     gameState = "primeira_fase"
-                else
+                elseif lastPhase == "segunda_fase" then
                     segunda_fase.load()
                     gameState = "segunda_fase"
+                elseif lastPhase == "terceira_fase" then
+                    terceira_fase.load()
+                    gameState = "terceira_fase"
                 end
             else
                 gameState = "menu"
@@ -67,6 +82,8 @@ function love.update(dt)
                     primeira_fase.load()
                 elseif gameState == "segunda_fase" then
                     segunda_fase.load()
+                elseif gameState == "terceira_fase" then
+                    terceira_fase.load()
                 end
                 overlay = nil
             elseif confirm == "resume" then
@@ -76,13 +93,11 @@ function love.update(dt)
         return
     end
 
-    -- Atalho R para respawn manual
     if love.keyboard.wasPressed("escape") and gameState ~= "menu" then
         overlay = "respawn"
         return
     end
 
-    -- Fluxo normal
     if gameState == "menu" then
         menu.update(dt, function(choice)
             gameState = choice
@@ -104,6 +119,16 @@ function love.update(dt)
             lastPhase = "segunda_fase"
             overlay = "gameover"
         elseif status == "exit" then
+            terceira_fase.load()
+            gameState = "terceira_fase"
+        end
+
+    elseif gameState == "terceira_fase" then
+        local status = terceira_fase.update(dt)
+        if status == "dead" then
+            lastPhase = "terceira_fase"
+            overlay = "gameover"
+        elseif status == "exit" then
             gameState = "menu"
         end
     end
@@ -118,7 +143,12 @@ function love.draw()
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
         love.graphics.setFont(fontePadrao)
     elseif gameState == "segunda_fase" then
-        segunda_fase.draw() 
+        segunda_fase.draw()
+        love.graphics.setFont(FontToPontos)
+        love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
+        love.graphics.setFont(fontePadrao)
+    elseif gameState == "terceira_fase" then
+        terceira_fase.draw()
         love.graphics.setFont(FontToPontos)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
         love.graphics.setFont(fontePadrao)
