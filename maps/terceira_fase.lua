@@ -532,16 +532,16 @@ return {
           name = "perseguidor",
           type = "",
           shape = "rectangle",
-          x = 37.8788,
-          y = -241.212,
-          width = 121.212,
-          height = 1552.12,
+          x = 125.758,
+          y = 146.667,
+          width = 142.424,
+          height = 139.999,
           rotation = 0,
           visible = true,
           properties = {
             ["detectionRadius"] = 100099,
             ["isEnemy"] = true,
-            ["speed"] = 215
+            ["speed"] = 200
           }
         }
       }

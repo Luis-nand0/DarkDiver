@@ -1,7 +1,8 @@
+-- player.lua
 local Player = {}
 Player.__index = Player
 
-function Player.new()
+function Player.new(cam)
     local self = setmetatable({}, Player)
     self.x, self.y = 0, 0
     self.w, self.h = 32, 32
@@ -23,7 +24,9 @@ function Player.new()
     self.shootEnabled = true
     self.shootCooldown = 0
     self.shootRate = 0.5 -- segundos entre disparos
-    self.facing = 1 -- 1 direita, -1 esquerda
+
+    -- guarda câmera para conversão de coordenadas
+    self.cam = cam
 
     return self
 end
@@ -73,7 +76,6 @@ function Player:update(dt, mapa)
     if love.keyboard.isDown("s", "down") and not self.isGrounded then
         extraGravity = 1500
     end
-
     self.vy = self.vy + (self.gravity + extraGravity) * dt
 
     -- colisão mundo
@@ -86,7 +88,7 @@ function Player:update(dt, mapa)
     self.canWallJump = false
     local exitFlag = false
 
-    for i = 1, (len or 0) do
+    for i = 1, len do
         local col = cols[i]
         local handled = false
         if col.other.isCaranguejo or col.other.isSpike or col.other.isRebatedor then
@@ -114,9 +116,7 @@ function Player:update(dt, mapa)
                 self.vy = 0
             end
         end
-        if col.other.isExit then
-            exitFlag = true
-        end
+        if col.other.isExit then exitFlag = true end
     end
 
     if exitFlag and not self.dead then
@@ -140,17 +140,21 @@ function Player:update(dt, mapa)
     end
 end
 
-function Player:shoot(mx, my)
+function Player:shoot(screenX, screenY)
+    if self.shootCooldown > 0 then return end
     local bulletSpeed = 400
     local size = 8
+    -- centro do player no mundo
     local px = self.x + self.w/2
     local py = self.y + self.h/2
+    -- converte coordenadas da tela para coordenadas do mundo
+    local mx, my = self.cam:worldCoords(screenX, screenY)
 
     local dx = mx - px
     local dy = my - py
-    local len = math.sqrt(dx * dx + dy * dy)
-    if len == 0 then return end
-    dx, dy = dx / len, dy / len
+    local dist = math.sqrt(dx*dx + dy*dy)
+    if dist == 0 then return end
+    dx, dy = dx/dist, dy/dist
 
     local b = {
         x = px - size/2,
@@ -161,12 +165,12 @@ function Player:shoot(mx, my)
         h = size
     }
     table.insert(self.bullets, b)
+    self.shootCooldown = self.shootRate
 end
 
 function Player:mousepressed(x, y, button)
-    if self.shootEnabled and button == 1 and self.shootCooldown == 0 then
+    if self.shootEnabled and button == 1 then
         self:shoot(x, y)
-        self.shootCooldown = self.shootRate
     end
 end
 

@@ -16,6 +16,7 @@ terceira_fase.cam = cam   -- expõe a câmera para uso externo
 
 local world, mapa, player
 local enemies = {}
+local boss  -- variável para referência única ao boss
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -55,15 +56,16 @@ function terceira_fase.load()
     if mapa.layers[n] then mapa.layers[n].visible = false end
   end
 
-  -- Spawna jogador
+  -- Spawna jogador (agora passando a câmera)
   local sx, sy = encontrarSpawn(mapa)
-  player = Player.new()
+  player = Player.new(cam)
   player:load(world, sx, sy)
   player.shootEnabled = true  -- Ativa o tiro apenas nesta fase
   terceira_fase.player = player   -- expõe o player para uso externo
 
   -- Carrega inimigos
   enemies = {}
+  boss = nil
   local enemyLayer = mapa.layers["enemies"]
   if enemyLayer and enemyLayer.objects then
     for _, obj in ipairs(enemyLayer.objects) do
@@ -76,6 +78,7 @@ function terceira_fase.load()
             speed           = p.speed,
             detectionRadius = p.detectionRadius
           })
+          boss = e               -- guarda referência ao boss
           table.insert(enemies, e)
 
         elseif p.isSentinela then
@@ -100,7 +103,7 @@ end
 
 function terceira_fase.update(dt)
   mapa:update(dt)
-  player:update(dt,mapa)
+  player:update(dt, mapa)
 
   for _, e in ipairs(enemies) do
     e:update(dt, player)
@@ -115,9 +118,14 @@ function terceira_fase.update(dt)
     love.graphics.getHeight()
   )
 
+  -- requer derrotar boss antes de sair
   if player.dead then
     return "dead"
   elseif player.reachedExit then
+    if boss and not boss.isDead then
+      -- jogador atingiu saída mas boss ainda vivo: bloqueia saída
+      return "alive"
+    end
     return "exit"
   else
     return "alive"
@@ -126,6 +134,7 @@ end
 
 function terceira_fase.draw()
   cam:attach()
+  -- Desenho do mapa e entidades
   for _, layerName in ipairs({ "fundo", "floor", "bpulo", "espinhos"}) do
     if mapa.layers[layerName] then
       mapa:drawLayer(mapa.layers[layerName])
@@ -138,6 +147,25 @@ function terceira_fase.draw()
 
   player:draw()
   cam:detach()
+
+  -- HUD (barra de vida do boss) na parte inferior
+  if boss and not boss.isDead then
+    local sw, sh  = love.graphics.getWidth(), love.graphics.getHeight()
+    local barW, barH = sw * 0.6, 20
+    local bx = (sw - barW) / 2
+    local by = sh * 0.9  -- posiciona a 90% da altura da tela
+
+    local pct = math.max(boss.health, 0) / boss.maxHealth
+
+    love.graphics.setColor(0.1, 0.1, 0.1)
+    love.graphics.rectangle("fill", bx, by, barW, barH)
+
+    love.graphics.setColor(0, 1, 0)
+    love.graphics.rectangle("fill", bx, by, barW * pct, barH)
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.rectangle("line", bx, by, barW, barH)
+  end
 end
 
 -- Adiciona o tratamento de clique do mouse
