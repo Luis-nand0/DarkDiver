@@ -17,6 +17,9 @@ local lastPhase = nil
 -- Buffer para detectar teclas
 local keyBuffer = {}
 
+--fonte padrao
+local fontePadrao = love.graphics.newFont(14)
+
 
 function love.keypressed(key)
     keyBuffer[key] = true
@@ -55,7 +58,7 @@ function love.load()
     menu_respawn.load()
     gameOverMenu.load()
 
-    FontToPontos = love.graphics.newFont(32)
+    FontToPontos = love.graphics.newFont(40)
 end
 
 function love.update(dt)
@@ -143,16 +146,19 @@ function love.draw()
         menu.draw()
     elseif gameState == "primeira_fase" then
         primeira_fase.draw()
-    
+        love.graphics.setFont(FontToPontos)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
+        fonte.setar(love.graphics.newFont("fonts/Ridiculo.ttf", 18))
     elseif gameState == "segunda_fase" then
         segunda_fase.draw()
-     
+        love.graphics.setFont(FontToPontos)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
+        fonte.setar(love.graphics.newFont("fonts/hacker.ttf", 18))
     elseif gameState == "terceira_fase" then
         terceira_fase.draw()
-       
+        love.graphics.setFont(FontToPontos)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
+        fonte.setar(love.graphics.newFont("fonts/arial.ttf", 18))
     end
 
     if overlay == "respawn" then
