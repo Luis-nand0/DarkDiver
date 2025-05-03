@@ -9,6 +9,7 @@ local Boss       = require "boss"
 local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
+local fonte = require "fonte"
 
 local terceira_fase = {}
 local cam = Camera()
@@ -33,6 +34,11 @@ local function encontrarSpawn(mapa)
 end
 
 function terceira_fase.load()
+
+
+  local fontArial = love.graphics.newFont("fonts/arial.ttf", 18)
+    fonte.setar(fontArial)
+
   world = bump.newWorld(32)
   mapa  = sti("maps/terceira_fase.lua", { "bump" })
   mapa:resize()

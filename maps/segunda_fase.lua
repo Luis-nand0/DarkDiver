@@ -9,8 +9,8 @@ return {
   height = 75,
   tilewidth = 32,
   tileheight = 32,
-  nextlayerid = 14,
-  nextobjectid = 286,
+  nextlayerid = 15,
+  nextobjectid = 317,
   properties = {},
   tilesets = {
     {
@@ -408,12 +408,12 @@ return {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
-        0, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
-        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
-        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
-        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
-        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
-        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
+        0, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 5222, 5222, 0, 0, 0, 0, 0, 856, 856, 856, 856,
+        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 5222, 5222, 0, 0, 0, 0, 0, 856, 856, 856, 856,
+        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 5222, 5222, 0, 0, 0, 0, 0, 856, 856, 856, 856,
+        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 5222, 5222, 0, 0, 0, 0, 0, 856, 856, 856, 856,
+        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 5222, 5222, 0, 0, 0, 0, 0, 856, 856, 856, 856,
+        856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 5222, 5222, 0, 0, 0, 0, 0, 856, 856, 856, 856,
         856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
         856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
         856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 856, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 856, 856, 856, 856,
@@ -567,7 +567,7 @@ return {
       id = 5,
       name = "spawn",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -634,23 +634,6 @@ return {
             ["detectionRadius"] = 250,
             ["isCaranguejo"] = true,
             ["speed"] = 50
-          }
-        },
-        {
-          id = 36,
-          name = "rebatedor",
-          type = "",
-          shape = "rectangle",
-          x = 1071.58,
-          y = 98.848,
-          width = 45.4545,
-          height = 48.4848,
-          rotation = 0,
-          visible = true,
-          properties = {
-            ["isRebatedor"] = true,
-            ["speedX"] = 102,
-            ["speedY"] = 80
           }
         },
         {
@@ -726,8 +709,8 @@ return {
           name = "perseguidor",
           type = "",
           shape = "rectangle",
-          x = 149.333,
-          y = 460,
+          x = 61.333,
+          y = 512,
           width = 33.3333,
           height = 34,
           rotation = 0,
@@ -735,7 +718,7 @@ return {
           properties = {
             ["detectionRadius"] = 150,
             ["isEnemy"] = true,
-            ["speed"] = 200
+            ["speed"] = 150
           }
         },
         {
@@ -807,8 +790,8 @@ return {
           name = "rebatedor",
           type = "",
           shape = "rectangle",
-          x = 807.576,
-          y = 181.818,
+          x = 1192.91,
+          y = 271.151,
           width = 45.4545,
           height = 48.4848,
           rotation = 0,
@@ -824,8 +807,8 @@ return {
           name = "rebatedor",
           type = "",
           shape = "rectangle",
-          x = 1653.82,
-          y = 200.182,
+          x = 1315.15,
+          y = 158.849,
           width = 45.4545,
           height = 48.4848,
           rotation = 0,
@@ -841,8 +824,8 @@ return {
           name = "rebatedor",
           type = "",
           shape = "rectangle",
-          x = 568.182,
-          y = 100,
+          x = 1042.85,
+          y = 126.667,
           width = 45.4545,
           height = 48.4848,
           rotation = 0,
@@ -969,8 +952,8 @@ return {
           name = "sentinela",
           type = "",
           shape = "rectangle",
-          x = 1662.64,
-          y = 1947.39,
+          x = 1505.31,
+          y = 2019.39,
           width = 29.394,
           height = 33.2122,
           rotation = 0,
@@ -1024,6 +1007,472 @@ return {
             ["detectionRadius"] = 100,
             ["isEnemy"] = true,
             ["speed"] = 250
+          }
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 14,
+      name = "pontos",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 286,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 287.333,
+          y = 67.6667,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 288,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 446.667,
+          y = 160.333,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 289,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 549.333,
+          y = 255.667,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 290,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 357.333,
+          y = 381,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 291,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 832,
+          y = 253,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 292,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1061.33,
+          y = 254.333,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 293,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1310.67,
+          y = 347.667,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 294,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1636,
+          y = 515.667,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 295,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1662.67,
+          y = 807.667,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 296,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1344,
+          y = 1115.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 297,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1132,
+          y = 1053,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 298,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 856,
+          y = 1057,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 299,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 522.667,
+          y = 1061,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 300,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 265.333,
+          y = 1213,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 301,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 284,
+          y = 1431.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 302,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 544,
+          y = 1549,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 303,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 782.667,
+          y = 1657,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 304,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 993.333,
+          y = 1602.33,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 305,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1442.67,
+          y = 1663.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 306,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1658.67,
+          y = 1731.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 307,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1777.33,
+          y = 1853,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 308,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1640,
+          y = 2070.33,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 309,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1304,
+          y = 2047.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 310,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1128,
+          y = 2209,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 311,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 865.333,
+          y = 2111.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 312,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 1057.33,
+          y = 2015.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 313,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 854.667,
+          y = 1891.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 314,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 634.667,
+          y = 2083.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 315,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 350.667,
+          y = 2083.67,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
+          }
+        },
+        {
+          id = 316,
+          name = "Ponto",
+          type = "",
+          shape = "rectangle",
+          x = 220,
+          y = 2078.33,
+          width = 32,
+          height = 30,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["isPoint"] = true
           }
         }
       }
@@ -2033,7 +2482,7 @@ return {
           shape = "rectangle",
           x = 1461.33,
           y = 607.924,
-          width = 106.667,
+          width = 169.334,
           height = 191.818,
           rotation = 0,
           visible = true,

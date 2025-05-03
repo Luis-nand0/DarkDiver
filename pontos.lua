@@ -1,17 +1,25 @@
-local P = {}
+local Pontos = {}
+local valor = 0
 
-P.valor = 0
-
-function P.reset()
-    P.valor = 0
+-- Adiciona pontos
+function Pontos.add(qtd)
+    valor = valor + qtd
 end
 
-function P.adicionar(qtd)
-    P.valor = P.valor + qtd
+-- Retorna os pontos atuais
+function Pontos.get()
+    return valor
 end
 
-function P.get()
-    return P.valor
+-- Zera os pontos
+function Pontos.reset()
+    valor = 0
 end
 
-return P
+-- Define um valor específico (opcional)
+function Pontos.set(novoValor)
+    valor = novoValor or 0
+end
+
+return Pontos
+

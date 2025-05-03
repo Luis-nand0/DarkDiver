@@ -9,6 +9,8 @@ local Enemy      = require "enemy"
 local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
+local fonte = require "fonte"
+local pontos = require "pontos"
 
 local segunda_fase = {}
 local cam = Camera()
@@ -16,6 +18,8 @@ segunda_fase.cam = cam   -- expõe a câmera para uso externo
 
 local world, mapa, player
 local enemies = {}
+local pontos_coletaveis = {}  -- NOVO
+
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -32,12 +36,19 @@ local function encontrarSpawn(mapa)
 end
 
 function segunda_fase.load()
+
+  local fontHacker= love.graphics.newFont("fonts/hacker.ttf", 18)
+    fonte.setar(fontHacker)
+
   world = bump.newWorld(32)
   mapa  = sti("maps/segunda_fase.lua", { "bump" })
   mapa:resize()
-
+  pontos.reset()
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
+
+  pontos_coletaveis = {}  -- Reinicia os pontos da fase
+
 
   -- Zonas de saída
   local exitLayer = mapa.layers["exitZone"]
@@ -53,6 +64,20 @@ function segunda_fase.load()
   -- Oculta colisões visuais
   for _, n in ipairs({ "Walls_fase2"}) do
     if mapa.layers[n] then mapa.layers[n].visible = false end
+  end
+
+  local pontoLayer = mapa.layers["pontos"]
+  if pontoLayer and pontoLayer.objects then
+    for _, obj in ipairs(pontoLayer.objects) do
+      if obj.properties and obj.properties.isPoint then
+        table.insert(pontos_coletaveis, {
+          x = obj.x,
+          y = obj.y,
+          w = obj.width or 16,
+          h = obj.height or 16
+        })
+      end
+    end
   end
 
   -- Spawna jogador
@@ -114,6 +139,9 @@ function segunda_fase.update(dt)
     love.graphics.getHeight()
   )
 
+  -- Coletar pontos
+  utils.coletarPontos(player, pontos_coletaveis)
+
   if player.dead then
     return "dead"
   elseif player.reachedExit then
@@ -134,6 +162,12 @@ function segunda_fase.draw()
   for _, e in ipairs(enemies) do
     e:draw()
   end
+
+  for _, p in ipairs(pontos_coletaveis) do
+    love.graphics.setColor(1, 1, 0) -- amarelo
+    love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
+  end
+  love.graphics.setColor(1, 1, 1)
 
   player:draw()
   cam:detach()

@@ -1,5 +1,7 @@
 local utils = {}
 
+local Pontos = require "pontos"
+
 --[[
 Função: limitarCamera
 Descrição: Centraliza a câmera no jogador e impede que ela vá além do mapa.
@@ -27,10 +29,23 @@ function utils.limitarCamera(camera, targetX, targetY, mapWidth, mapHeight, scre
     camera:lookAt(camX, camY)
 end
 
-function checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-    return x1 < x2+w2 and
-           x2 < x1+w1 and
-           y1 < y2+h2 and
-           y2 < y1+h1
+-- Função genérica de colisão AABB
+function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2)
+    return x1 < x2 + w2 and
+           x2 < x1 + w1 and
+           y1 < y2 + h2 and
+           y2 < y1 + h1
 end
+
+-- Verifica se o jogador colidiu com pontos e remove os coletados
+function utils.coletarPontos(player, listaDePontos)
+    for i = #listaDePontos, 1, -1 do
+        local p = listaDePontos[i]
+        if checkCollision(player.x, player.y, player.w, player.h, p.x, p.y, p.w, p.h) then
+            table.remove(listaDePontos, i)
+            Pontos.add(10)
+        end
+    end
+end
+
 return utils

@@ -1,4 +1,3 @@
--- primeira_fase.lua
 local sti        = require "libs.sti"
 local bump       = require "libs.bump"
 local Camera     = require "libs.hump.camera"
@@ -9,14 +8,16 @@ local Enemy      = require "enemy"
 local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
-local pontos = require "pontos"
-
+local pontos     = require "pontos"
+local fonte      = require "fonte"
 local primeira_fase = {}
+
 local cam = Camera()
-primeira_fase.cam = cam   -- expõe a câmera para uso externo
+primeira_fase.cam = cam
 
 local world, mapa, player
 local enemies = {}
+local pontos_coletaveis = {}  -- NOVO
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -33,12 +34,17 @@ local function encontrarSpawn(mapa)
 end
 
 function primeira_fase.load()
+  local fontRidiculo = love.graphics.newFont("fonts/Ridiculo.ttf", 18)
+  fonte.setar(fontRidiculo)
+
   world = bump.newWorld(32)
   mapa  = sti("maps/primeira_fase.lua", { "bump" })
   mapa:resize()
   pontos.reset()
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
+
+  pontos_coletaveis = {}  -- Reinicia os pontos da fase
 
   -- Zonas de saída
   local exitLayer = mapa.layers["exitZone"]
@@ -51,18 +57,32 @@ function primeira_fase.load()
     end
   end
 
+  -- Carrega pontos do mapa
+  local pontoLayer = mapa.layers["pontos"]
+  if pontoLayer and pontoLayer.objects then
+    for _, obj in ipairs(pontoLayer.objects) do
+      if obj.properties and obj.properties.isPoint then
+        table.insert(pontos_coletaveis, {
+          x = obj.x,
+          y = obj.y,
+          w = obj.width or 16,
+          h = obj.height or 16
+        })
+      end
+    end
+  end
+
   -- Oculta colisões visuais
   for _, n in ipairs({ "Walls_fase1", "borders_fase1" }) do
     if mapa.layers[n] then mapa.layers[n].visible = false end
   end
 
-  -- Spawna jogador
   local sx, sy = encontrarSpawn(mapa)
   player = Player.new()
   player:load(world, sx, sy)
-  primeira_fase.player = player   -- expõe o player para uso externo
+  primeira_fase.player = player
 
-  -- Carrega inimigos
+  -- Inimigos
   enemies = {}
   local enemyLayer = mapa.layers["enemies"]
   if enemyLayer and enemyLayer.objects then
@@ -106,6 +126,9 @@ function primeira_fase.update(dt)
     e:update(dt, player)
   end
 
+  -- Coleta de pontos
+  utils.coletarPontos(player, pontos_coletaveis)
+
   local px, py = player:getPosition()
   utils.limitarCamera(
     cam, px, py,
@@ -126,6 +149,7 @@ end
 
 function primeira_fase.draw()
   cam:attach()
+
   for _, layerName in ipairs({ "fundo", "floor" }) do
     if mapa.layers[layerName] then
       mapa:drawLayer(mapa.layers[layerName])
@@ -136,7 +160,15 @@ function primeira_fase.draw()
     e:draw()
   end
 
+  -- Desenhar pontos
+  for _, p in ipairs(pontos_coletaveis) do
+    love.graphics.setColor(1, 1, 0) -- amarelo
+    love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
+  end
+  love.graphics.setColor(1, 1, 1)
+
   player:draw()
+
   cam:detach()
 end
 
