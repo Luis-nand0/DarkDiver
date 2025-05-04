@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="75" tilewidth="32" tileheight="32" infinite="0" nextlayerid="14" nextobjectid="286">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="75" tilewidth="32" tileheight="32" infinite="0" nextlayerid="15" nextobjectid="317">
  <editorsettings>
   <export target="segunda_fase.lua" format="lua"/>
  </editorsettings>
@@ -411,7 +411,7 @@
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="258" name="sentinela" x="1662.64" y="1947.39" width="29.394" height="33.2122">
+  <object id="258" name="sentinela" x="1534.64" y="2011.39" width="29.394" height="33.2122">
    <properties>
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
@@ -431,6 +431,153 @@
     <property name="detectionRadius" type="int" value="100"/>
     <property name="isEnemy" type="bool" value="true"/>
     <property name="speed" type="int" value="250"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="14" name="pontos">
+  <object id="286" name="Ponto" x="321.333" y="110.333" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="287" name="Ponto" x="318.667" y="413" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="288" name="Ponto" x="576" y="270.333" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="289" name="Ponto" x="832" y="265" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="290" name="Ponto" x="1308" y="350.333" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="291" name="Ponto" x="1058.67" y="257" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="292" name="Ponto" x="1661.33" y="642.333" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="293" name="Ponto" x="1661.33" y="862.333" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="294" name="Ponto" x="1402.67" y="1119.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="295" name="Ponto" x="1154.67" y="1091.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="296" name="Ponto" x="860" y="1111.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="297" name="Ponto" x="541.333" y="1083.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="298" name="Ponto" x="268" y="1245" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="299" name="Ponto" x="321.333" y="1566.33" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="300" name="Ponto" x="641.333" y="1703.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="301" name="Ponto" x="798.667" y="1661" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="302" name="Ponto" x="1028" y="1729" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="303" name="Ponto" x="1217.33" y="1669" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="304" name="Ponto" x="1470.67" y="1739.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="305" name="Ponto" x="1662.67" y="1739.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="308" name="Ponto" x="1478.67" y="2086.33" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="309" name="Ponto" x="1698.67" y="2043.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="310" name="Ponto" x="1180" y="2197" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="311" name="Ponto" x="845.333" y="2103.67" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="312" name="Ponto" x="1046.67" y="2010.33" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="313" name="Ponto" x="801.333" y="1886.33" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="314" name="Ponto" x="578.667" y="2113" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="315" name="Ponto" x="352" y="2090.33" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="316" name="Ponto" x="220" y="2098.33" width="32" height="30">
+   <properties>
+    <property name="isPoint" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

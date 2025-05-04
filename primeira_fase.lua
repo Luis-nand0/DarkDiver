@@ -150,9 +150,9 @@ end
 function primeira_fase.draw()
   cam:attach()
 
-  for _, layerName in ipairs({ "fundo", "floor" }) do
+  for _, layerName in ipairs({ "fundo", "floor", "espinhos", "decoracao" }) do
     if mapa.layers[layerName] then
-      mapa:drawLayer(mapa.layers[layerName])
+    mapa:drawLayer(mapa.layers[layerName])
     end
   end
 

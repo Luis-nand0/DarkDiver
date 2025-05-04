@@ -10,6 +10,7 @@ local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
 local fonte = require "fonte"
+local pontos     = require "pontos"
 
 local terceira_fase = {}
 local cam = Camera()
@@ -17,6 +18,7 @@ terceira_fase.cam = cam   -- expõe a câmera para uso externo
 
 local world, mapa, player
 local enemies = {}
+local pontos_coletaveis = {}  -- NOVO
 local boss  -- variável para referência única ao boss
 
 local function encontrarSpawn(mapa)
@@ -42,7 +44,7 @@ function terceira_fase.load()
   world = bump.newWorld(32)
   mapa  = sti("maps/terceira_fase.lua", { "bump" })
   mapa:resize()
-
+  pontos.reset()
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
 
@@ -56,6 +58,21 @@ function terceira_fase.load()
       end
     end
   end
+
+   -- Carrega pontos do mapa
+   local pontoLayer = mapa.layers["pontos"]
+   if pontoLayer and pontoLayer.objects then
+     for _, obj in ipairs(pontoLayer.objects) do
+       if obj.properties and obj.properties.isPoint then
+         table.insert(pontos_coletaveis, {
+           x = obj.x,
+           y = obj.y,
+           w = obj.width or 16,
+           h = obj.height or 16
+         })
+       end
+     end
+   end
 
   -- Oculta colisões visuais
   for _, n in ipairs({ "Walls_fase3"}) do
@@ -115,6 +132,9 @@ function terceira_fase.update(dt)
     e:update(dt, player)
   end
 
+    utils.coletarPontos(player, pontos_coletaveis)
+
+
   local px, py = player:getPosition()
   utils.limitarCamera(
     cam, px, py,
@@ -150,6 +170,13 @@ function terceira_fase.draw()
   for _, e in ipairs(enemies) do
     e:draw()
   end
+
+  -- Desenhar pontos
+  for _, p in ipairs(pontos_coletaveis) do
+    love.graphics.setColor(1, 1, 0) -- amarelo
+    love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
+  end
+  love.graphics.setColor(1, 1, 1)
 
   player:draw()
   cam:detach()
