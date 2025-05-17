@@ -1,11 +1,10 @@
--- player.lua
 local Player = {}
 Player.__index = Player
 
 function Player.new(cam)
     local self = setmetatable({}, Player)
     self.x, self.y = 0, 0
-    self.w, self.h = 32, 32
+    self.w, self.h = 48 , 48  
 
     self.speed = 300
     self.jumpForce = 425
@@ -18,15 +17,21 @@ function Player.new(cam)
     self.canWallJump = false
     self.dead = false
     self.reachedExit = false
+    self.facing = 1
 
-    -- shooting
     self.bullets = {}
     self.shootEnabled = true
     self.shootCooldown = 0
-    self.shootRate = 0.5 -- segundos entre disparos
+    self.shootRate = 0.5
 
-    -- guarda câmera para conversão de coordenadas
     self.cam = cam
+
+    self.animTimer = 0
+    self.animFrame = 1
+    self.jumpAnimTimer = 0
+    self.jumping = false
+    self.falling = false
+    self.sprites = {}
 
     return self
 end
@@ -37,12 +42,18 @@ function Player:load(world, x, y)
     self.world:add(self, self.x, self.y, self.w, self.h)
     self.dead = false
     self.reachedExit = false
+
+    self.sprites[1] = love.graphics.newImage("Spritesheets/driver2.png")
+    self.sprites[2] = love.graphics.newImage("Spritesheets/diver3.png")
+    self.sprites[3] = love.graphics.newImage("Spritesheets/diver4.png") -- Sprite de pulo
+    self.sprites[4] = love.graphics.newImage("Spritesheets/diver5.png") -- Sprite de queda
+    self.sprites[5] = love.graphics.newImage("Spritesheets/diver6.png") -- Sprite de walljump
+    self.sprite = self.sprites[1]
 end
 
 function Player:update(dt, mapa)
     if self.dead or self.reachedExit then return end
 
-    -- movimento
     local target = 0
     if love.keyboard.isDown("d", "right") then
         target = self.speed
@@ -66,10 +77,13 @@ function Player:update(dt, mapa)
         end
     end
 
-    -- pulo
     if love.keyboard.isDown("space") and self.isGrounded then
         self.vy = -self.jumpForce
         self.isGrounded = false
+        self.sprite = self.sprites[3]
+        self.jumpAnimTimer = 0.2
+        self.jumping = true
+        self.falling = false
     end
 
     local extraGravity = 0
@@ -78,7 +92,6 @@ function Player:update(dt, mapa)
     end
     self.vy = self.vy + (self.gravity + extraGravity) * dt
 
-    -- colisão mundo
     local goalX = self.x + self.vx * dt
     local goalY = self.y + self.vy * dt
     local actualX, actualY, cols, len = self.world:move(self, goalX, goalY)
@@ -91,16 +104,20 @@ function Player:update(dt, mapa)
     for i = 1, len do
         local col = cols[i]
         local handled = false
+
         if col.other.isCaranguejo or col.other.isSpike or col.other.isRebatedor then
             self.dead = true
         end
+
         if col.other.isJumpBlock and col.normal.y < 0 and self.vy >= 0 then
             self.vy = -(col.other.forcaDoPulo or 600)
             handled = true
         end
+
         if col.other.isWallJumpBlock and col.normal.x ~= 0 then
             self.canWallJump = true
             self.wallJumpDirection = col.other.jumpDirection
+            self.sprite = self.sprites[5] -- Altera para o sprite de walljump
             if love.keyboard.isDown("space") then
                 self.vx = (self.wallJumpDirection == "left" and -500) or 500
                 self.vy = -400
@@ -108,63 +125,94 @@ function Player:update(dt, mapa)
             end
             handled = true
         end
+
         if not handled then
             if col.normal.y < 0 then
                 self.isGrounded = true
                 self.vy = 0
+                self.falling = false
             elseif col.normal.y > 0 then
                 self.vy = 0
             end
         end
-        if col.other.isExit then exitFlag = true end
+
+        if col.other.isExit then
+            exitFlag = true
+        end
     end
 
     if exitFlag and not self.dead then
         self.reachedExit = true
     end
 
-    -- cooldown de tiro
+    -- Animação de pulo e queda
+    if self.jumping then
+        self.jumpAnimTimer = self.jumpAnimTimer - dt
+        if self.jumpAnimTimer <= 0 then
+            self.jumping = false
+            self.sprite = self.sprites[1]
+        end
+    elseif not self.isGrounded then
+        self.falling = true
+        self.sprite = self.sprites[4] -- Sprite de queda
+    end
+
     if self.shootEnabled then
         self.shootCooldown = math.max(self.shootCooldown - dt, 0)
     end
 
-    -- atualizar projéteis
     for i = #self.bullets, 1, -1 do
         local b = self.bullets[i]
         b.x = b.x + b.vx * dt
         b.y = b.y + b.vy * dt
+
         if b.x < -100 or b.x > mapa.width * mapa.tilewidth + 100 or
            b.y < -100 or b.y > mapa.height * mapa.tileheight + 100 then
             table.remove(self.bullets, i)
+        end
+    end
+
+    if math.abs(self.vx) > 10 then
+        self.animTimer = self.animTimer + dt
+        if self.animTimer >= 0.15 then
+            self.animFrame = self.animFrame % 2 + 1
+            if not self.jumping and not self.falling then
+                self.sprite = self.sprites[self.animFrame]
+            end
+            self.animTimer = 0
+        end
+    else
+        self.animFrame = 1
+        if not self.jumping and not self.falling then
+            self.sprite = self.sprites[1]
         end
     end
 end
 
 function Player:shoot(screenX, screenY)
     if self.shootCooldown > 0 then return end
+
     local bulletSpeed = 400
     local size = 8
-    -- centro do player no mundo
-    local px = self.x + self.w/2
-    local py = self.y + self.h/2
-    -- converte coordenadas da tela para coordenadas do mundo
+    local px = self.x + self.w / 2
+    local py = self.y + self.h / 2
     local mx, my = self.cam:worldCoords(screenX, screenY)
+    local dx, dy = mx - px, my - py
+    local dist = math.sqrt(dx * dx + dy * dy)
 
-    local dx = mx - px
-    local dy = my - py
-    local dist = math.sqrt(dx*dx + dy*dy)
     if dist == 0 then return end
-    dx, dy = dx/dist, dy/dist
 
-    local b = {
-        x = px - size/2,
-        y = py - size/2,
+    dx, dy = dx / dist, dy / dist
+
+    table.insert(self.bullets, {
+        x = px - size / 2,
+        y = py - size / 2,
         vx = dx * bulletSpeed,
         vy = dy * bulletSpeed,
         w = size,
         h = size
-    }
-    table.insert(self.bullets, b)
+    })
+
     self.shootCooldown = self.shootRate
 end
 
@@ -176,9 +224,22 @@ end
 
 function Player:draw()
     if not self.dead then
-        love.graphics.setColor(0, 1, 0)
-        love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+        local scaleX = self.facing or 1
+        love.graphics.draw(
+            self.sprite,
+            self.x + self.w / 2, self.y + self.h / 2,
+            0,
+            scaleX, 1,
+            32, 32
+        )
     end
+
+    -- Desenha a hitbox (colisão) do player
+    love.graphics.setColor(1, 0, 0, 0.5) -- Vermelho semi-transparente
+    love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+    love.graphics.setColor(1, 1, 1) -- Restaura a cor padrão
+
+    -- Desenha os tiros
     love.graphics.setColor(0, 1, 1)
     for _, b in ipairs(self.bullets) do
         love.graphics.rectangle("fill", b.x, b.y, b.w, b.h)
@@ -186,8 +247,9 @@ function Player:draw()
     love.graphics.setColor(1, 1, 1)
 end
 
+
 function Player:getPosition()
-    return self.x + self.w/2, self.y + self.h/2
+    return self.x + self.w / 2, self.y + self.h / 2
 end
 
 function Player:collidesWith(x, y, w, h)

@@ -170,7 +170,7 @@ function terceira_fase.draw()
   for _, e in ipairs(enemies) do
     e:draw()
   end
-
+ 
   -- Desenhar pontos
   for _, p in ipairs(pontos_coletaveis) do
     love.graphics.setColor(1, 1, 0) -- amarelo

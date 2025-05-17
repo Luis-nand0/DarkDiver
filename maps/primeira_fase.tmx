@@ -307,16 +307,16 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5716,5717,5717,5717,5717,5717,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5716,5717,5717,5717,5717,5717,5717,5717,5717,5717,5718,0,5735,5727,5727,5727,5727,5727,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5775,5767,5767,5767,5768,5769,5735,5737,5737,5737,5727,5727,5727,5727,5727,5727,5728,5729,5735,5737,5737,5737,5737,5737,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5766,5767,5767,5767,5767,5768,5767,5767,5767,5767,5767,5767,5767,5767,5767,5767,0,0,0,0,5785,5788,5788,5788,5788,5790,5735,5737,5737,5737,5737,5737,5737,5737,5737,5737,5737,5728,5745,5757,5746,5747,5747,5747,
-0,0,0,0,0,0,0,0,0,0,5775,5767,5767,5767,5767,5767,5776,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5779,1865,1865,5780,5785,5788,5788,5788,5788,5790,5735,5737,5737,5747,5747,5747,5747,5747,5747,5747,5747,5747,5739,0,5756,5757,5746,5737,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5775,5767,5767,5767,5768,5769,5735,5737,5737,5737,5727,5727,5727,5727,5727,5727,5728,5729,0,0,5837,5837,5737,5737,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5766,5767,5767,5767,5767,5768,5767,5767,5767,5767,5767,5767,5767,5767,5767,5767,0,0,0,0,5785,5788,5788,5788,5788,5790,5735,5737,5737,5737,5737,5737,5737,5737,5737,5737,5737,5728,5745,0,5837,5837,5747,5747,
+0,0,0,0,0,0,0,0,0,0,5775,5767,5767,5767,5767,5767,5776,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5779,1865,1865,5780,5785,5788,5788,5788,5788,5790,5735,5737,5737,5747,5747,5747,5747,5747,5747,5747,5747,5747,5739,0,5837,5837,5837,5737,
 0,0,0,0,0,0,0,0,0,0,5785,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5790,5806,5807,5807,5807,5807,5809,5745,5757,5746,5727,5727,5727,5727,5727,5727,5727,5727,5727,5739,0,0,5725,5726,5737,
-0,0,0,0,0,0,0,0,0,0,5806,5796,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5799,5800,0,0,0,0,0,0,0,0,5735,5737,5737,5737,5737,5737,5737,5737,5737,5748,0,0,0,5735,5737,5737,
+0,0,0,0,0,0,0,0,0,0,5806,5796,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5799,5800,0,0,0,0,0,0,0,0,5735,5737,5737,5737,5737,5737,5737,5737,5737,5748,0,0,5837,5837,5737,5737,
 0,0,0,0,0,0,0,0,0,0,0,5806,5796,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5799,5808,5808,5808,0,0,0,0,0,0,0,0,0,0,5735,5747,5747,5747,5747,5747,5747,5747,5748,5749,0,0,0,5756,5746,5737,
 0,0,0,0,0,0,0,0,0,0,0,0,5806,5807,5807,5807,5796,5787,5787,5787,5787,5787,5787,5787,5787,5787,5787,5799,5808,5808,5800,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5727,5727,5727,5727,5727,5727,5748,5749,0,0,0,0,0,5735,5737,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5806,5807,5807,5807,5796,5787,5787,5787,5787,5787,5799,5800,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5737,5737,5737,5737,5737,5737,5728,5729,0,0,0,0,0,5735,5737,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5806,5796,5787,5787,5787,5799,5800,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5747,5747,5747,5747,5747,5747,5747,5739,0,0,0,0,0,5735,5737,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5806,5808,5808,5808,5800,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5727,5727,5727,5727,5727,5727,5727,5739,0,0,0,0,0,5735,5737,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5806,0,0,0,0,0,5800,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5747,5747,5747,5747,5747,5747,5747,5739,0,0,0,0,0,5735,5737,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5727,5727,5727,5727,5727,5727,5727,5739,0,0,0,0,0,5735,5737,
 0,0,0,0,0,0,0,0,0,0,0,0,5766,5768,5768,5767,5768,5768,5780,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5735,5737,5737,5737,5737,5737,5737,5737,5728,5729,0,0,0,5725,5726,5727,
 0,0,0,0,0,0,0,0,0,0,0,0,5785,5777,5777,5777,5777,5777,5790,5766,5767,5767,5768,5768,5769,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5745,5746,5747,5747,5747,5747,5747,5747,5747,5739,0,0,5725,5726,5727,5727,
 0,0,0,0,0,0,0,0,0,0,0,0,5795,5807,5796,5777,5777,5799,5809,5785,5787,5787,5787,5787,5790,5766,5767,5767,5767,5767,5767,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5746,5727,5727,5727,5727,5727,5727,5739,0,0,5735,5737,5727,5727,
@@ -385,7 +385,7 @@
     <property name="isPoint" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="467" name="Ponto" x="317" y="2048" width="34" height="28">
+  <object id="467" name="Ponto" x="321" y="2020" width="34" height="28">
    <properties>
     <property name="isPoint" type="bool" value="true"/>
    </properties>
@@ -430,7 +430,7 @@
     <property name="isPoint" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="483" name="Ponto" x="348" y="1022.33" width="32" height="30">
+  <object id="483" name="Ponto" x="350" y="1026.33" width="32" height="30">
    <properties>
     <property name="isPoint" type="bool" value="true"/>
    </properties>
@@ -609,7 +609,7 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Walls_fase1" visible="0" opacity="0.97">
+ <objectgroup id="8" name="Walls_fase1" opacity="0.94">
   <object id="225" x="2.66667" y="2143" width="476" height="193">
    <properties>
     <property name="collidable" type="bool" value="true"/>
@@ -755,7 +755,7 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="312" x="1856.67" y="507" width="62" height="1894.33">
+  <object id="312" x="1855.67" y="508" width="62" height="1894.33">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -967,11 +967,6 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="368" x="704" y="414" width="94" height="33">
-   <properties>
-    <property name="collidable" type="bool" value="true"/>
-   </properties>
-  </object>
   <object id="369" x="538.879" y="220" width="487.121" height="36">
    <properties>
     <property name="collidable" type="bool" value="true"/>
@@ -982,7 +977,7 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="446" x="1789" y="606" width="78" height="62">
+  <object id="446" x="1784" y="606" width="83" height="62">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -1012,12 +1007,12 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="460" x="1760" y="126" width="194" height="62">
+  <object id="460" x="1760" y="126" width="194" height="35">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="461" x="1819.33" y="172" width="156" height="54">
+  <object id="461" x="1792.33" y="162" width="183" height="93">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -1032,7 +1027,7 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="472" x="1824" y="543.333" width="32" height="93.3333">
+  <object id="472" x="1822" y="543.333" width="34" height="93.3333">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -1042,7 +1037,7 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="474" x="1853" y="286.333" width="47" height="34.3333">
+  <object id="474" x="1791" y="286.333" width="109" height="34.3333">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
@@ -1143,7 +1138,7 @@
     <property name="speed" type="int" value="100"/>
    </properties>
   </object>
-  <object id="405" x="1023.17" y="879.5" width="61.3333" height="44">
+  <object id="405" x="1043.17" y="852.5" width="61.3333" height="44">
    <properties>
     <property name="detectionRadius" type="int" value="250"/>
     <property name="isEnemy" type="bool" value="true"/>
@@ -1151,29 +1146,29 @@
    </properties>
   </object>
   <object id="422" x="1219" y="1724" width="3" height="5"/>
-  <object id="427" name="Rebatedor" x="1843.71" y="290.833" width="51" height="61">
+  <object id="427" name="Rebatedor" x="1820.71" y="313.833" width="51" height="61">
    <properties>
     <property name="isRebatedor" type="bool" value="true"/>
     <property name="speedX" type="int" value="102"/>
     <property name="speedY" type="int" value="80"/>
    </properties>
   </object>
-  <object id="402" name="sentinela" x="768.333" y="1343.67" width="31.3333" height="32.3333">
+  <object id="402" name="sentinela" x="767.333" y="1281.67" width="31.3333" height="32.3333">
    <properties>
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="403" name="sentinela" x="349" y="1244" width="33.3333" height="33">
+  <object id="403" name="sentinela" x="319" y="1189.33" width="33.3333" height="33">
    <properties>
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="404" name="sentinela" x="609.667" y="1057.67" width="29.6667" height="28">
+  <object id="404" name="sentinela" x="639.667" y="1028.67" width="29.6667" height="28">
    <properties>
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="406" name="sentinela" x="1042.67" y="485.333" width="42.6667" height="32">
+  <object id="406" name="sentinela" x="1018.67" y="509.333" width="42.6667" height="32">
    <properties>
     <property name="isSentinela" type="bool" value="true"/>
    </properties>
@@ -1185,11 +1180,12 @@
     <property name="speed" type="int" value="50"/>
    </properties>
   </object>
-  <object id="463" name="Perseguidor" x="322.167" y="1950.5" width="29.6667" height="34">
+  <object id="463" name="Perseguidor" x="289.167" y="1885.5" width="29.6667" height="34">
    <properties>
     <property name="detectionRadius" type="int" value="250"/>
     <property name="isEnemy" type="bool" value="true"/>
     <property name="speed" type="int" value="100"/>
+    <property name="spriteIdle" type="file" value="../Spritesheets/perseguidor_spritesheet.png"/>
    </properties>
   </object>
  </objectgroup>
@@ -1207,7 +1203,7 @@
     <property name="collidable" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="130" x="1928" y="-72" width="304" height="2488">
+  <object id="130" x="1920" y="-70" width="304" height="2488">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>

@@ -1,4 +1,3 @@
--- segunda_fase.lua
 local sti        = require "libs.sti"
 local bump       = require "libs.bump"
 local Camera     = require "libs.hump.camera"
@@ -9,17 +8,17 @@ local Enemy      = require "enemy"
 local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
-local fonte = require "fonte"
-local pontos = require "pontos"
+local fonte      = require "fonte"
+local pontos     = require "pontos"
 
 local segunda_fase = {}
 local cam = Camera()
-segunda_fase.cam = cam   -- expõe a câmera para uso externo
+segunda_fase.cam = cam
 
 local world, mapa, player
 local enemies = {}
-local pontos_coletaveis = {}  -- NOVO
-
+local pontos_coletaveis = {}
+local sprite_ponto       -- sprite exclusivo da segunda fase
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -36,19 +35,20 @@ local function encontrarSpawn(mapa)
 end
 
 function segunda_fase.load()
-
-  local fontHacker= love.graphics.newFont("fonts/hacker.ttf", 18)
-    fonte.setar(fontHacker)
+  local fontHacker = love.graphics.newFont("fonts/hacker.ttf", 18)
+  fonte.setar(fontHacker)
 
   world = bump.newWorld(32)
   mapa  = sti("maps/segunda_fase.lua", { "bump" })
   mapa:resize()
   pontos.reset()
+
+  -- Carrega sprite específico da segunda fase
+  sprite_ponto = love.graphics.newImage("Spritesheets/nacho.fase2_sprite.png")
+
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
-
-  pontos_coletaveis = {}  -- Reinicia os pontos da fase
-
+  pontos_coletaveis = {}
 
   -- Zonas de saída
   local exitLayer = mapa.layers["exitZone"]
@@ -62,10 +62,11 @@ function segunda_fase.load()
   end
 
   -- Oculta colisões visuais
-  for _, n in ipairs({ "Walls_fase2"}) do
+  for _, n in ipairs({ "Walls_fase2" }) do
     if mapa.layers[n] then mapa.layers[n].visible = false end
   end
 
+  -- Pontos coletáveis
   local pontoLayer = mapa.layers["pontos"]
   if pontoLayer and pontoLayer.objects then
     for _, obj in ipairs(pontoLayer.objects) do
@@ -84,9 +85,9 @@ function segunda_fase.load()
   local sx, sy = encontrarSpawn(mapa)
   player = Player.new()
   player:load(world, sx, sy)
-  segunda_fase.player = player   -- expõe o player para uso externo
+  segunda_fase.player = player
 
-  -- Carrega inimigos
+  -- Inimigos
   enemies = {}
   local enemyLayer = mapa.layers["enemies"]
   if enemyLayer and enemyLayer.objects then
@@ -101,17 +102,14 @@ function segunda_fase.load()
             detectionRadius = p.detectionRadius
           })
           table.insert(enemies, e)
-
         elseif p.isSentinela then
           local s = Sentinela.new(obj.x, obj.y)
           s:load(world)
           table.insert(enemies, s)
-
         elseif p.isRebatedor then
           local r = Rebatedor.new(obj.x, obj.y, p)
           r:load(world)
           table.insert(enemies, r)
-
         elseif p.isCaranguejo then
           local c = Caranguejo.new(obj.x, obj.y, p)
           c:load(world)
@@ -130,6 +128,8 @@ function segunda_fase.update(dt)
     e:update(dt, player)
   end
 
+  utils.coletarPontos(player, pontos_coletaveis)
+
   local px, py = player:getPosition()
   utils.limitarCamera(
     cam, px, py,
@@ -138,9 +138,6 @@ function segunda_fase.update(dt)
     love.graphics.getWidth(),
     love.graphics.getHeight()
   )
-
-  -- Coletar pontos
-  utils.coletarPontos(player, pontos_coletaveis)
 
   if player.dead then
     return "dead"
@@ -153,6 +150,7 @@ end
 
 function segunda_fase.draw()
   cam:attach()
+
   for _, layerName in ipairs({ "fundo", "floor", "blocos" }) do
     if mapa.layers[layerName] then
       mapa:drawLayer(mapa.layers[layerName])
@@ -163,11 +161,14 @@ function segunda_fase.draw()
     e:draw()
   end
 
-  for _, p in ipairs(pontos_coletaveis) do
-    love.graphics.setColor(1, 1, 0) -- amarelo
-    love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
+  -- Desenhar pontos com sprite local
+  if sprite_ponto then
+    local scale = 2
+    local spriteW, spriteH = 16, 16
+    for _, p in ipairs(pontos_coletaveis) do
+      love.graphics.draw(sprite_ponto, p.x + spriteW / 2, p.y + spriteH / 2, 0, scale, scale, spriteW / 2, spriteH / 2)
+    end
   end
-  love.graphics.setColor(1, 1, 1)
 
   player:draw()
   cam:detach()

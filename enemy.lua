@@ -1,4 +1,3 @@
--- enemy.lua
 local Enemy = {}
 Enemy.__index = Enemy
 
@@ -12,6 +11,10 @@ function Enemy.new(world, x, y, props)
     self.detectionRadius = props.detectionRadius or 200
     self.chasing = false
 
+    -- Sprites (espera-se que props.spriteIdle e props.spriteChasing sejam caminhos de imagem)
+    self.spriteIdle    = love.graphics.newImage(props.spriteIdle or "Spritesheets/nacho_sprite.png")
+    self.spriteChasing = love.graphics.newImage(props.spriteChasing or "Spritesheets/perseguidorProfundo_sprite.png")
+
     -- adiciona no world do bump
     world:add(self, self.x, self.y, self.w, self.h)
     return self
@@ -19,7 +22,6 @@ end
 
 function Enemy:update(dt, player)
     local px, py = player:getPosition()
-    -- detecta proximidade
     if not self.chasing then
         local dx = px - (self.x + self.w/2)
         local dy = py - (self.y + self.h/2)
@@ -29,7 +31,6 @@ function Enemy:update(dt, player)
     end
 
     if self.chasing then
-        -- aponta para o jogador
         local dx, dy = px - (self.x + self.w/2), py - (self.y + self.h/2)
         local dist = math.sqrt(dx*dx + dy*dy)
         if dist > 0 then
@@ -39,7 +40,6 @@ function Enemy:update(dt, player)
             local goalY = self.y + vy * dt
             local actualX, actualY, cols, len = self.world:move(self, goalX, goalY)
             self.x, self.y = actualX, actualY
-            -- se colidir com o player, mata
             for i=1,(len or 0) do
                 if cols[i].other == player then
                     player.dead = true
@@ -50,9 +50,9 @@ function Enemy:update(dt, player)
 end
 
 function Enemy:draw()
-    love.graphics.setColor(1, 0, 0)
-    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+    local sprite = self.chasing and self.spriteChasing or self.spriteIdle
     love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(sprite, self.x, self.y)
 end
 
 return Enemy

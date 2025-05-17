@@ -1,6 +1,7 @@
 local sti        = require "libs.sti"
 local bump       = require "libs.bump"
 local Camera     = require "libs.hump.camera"
+
 local utils      = require "utils"
 local Player     = require "player"
 local Blocos     = require "blocos"
@@ -17,7 +18,7 @@ primeira_fase.cam = cam
 
 local world, mapa, player
 local enemies = {}
-local pontos_coletaveis = {}  -- NOVO
+local pontos_coletaveis = {}
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -41,10 +42,11 @@ function primeira_fase.load()
   mapa  = sti("maps/primeira_fase.lua", { "bump" })
   mapa:resize()
   pontos.reset()
+  pontos.load("Spritesheets/nacho_sprite.png") -- <== define o sprite da fase
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
-
-  pontos_coletaveis = {}  -- Reinicia os pontos da fase
+ 
+  pontos_coletaveis = {}
 
   -- Zonas de saída
   local exitLayer = mapa.layers["exitZone"]
@@ -57,7 +59,7 @@ function primeira_fase.load()
     end
   end
 
-  -- Carrega pontos do mapa
+  -- Pontos coletáveis
   local pontoLayer = mapa.layers["pontos"]
   if pontoLayer and pontoLayer.objects then
     for _, obj in ipairs(pontoLayer.objects) do
@@ -152,7 +154,7 @@ function primeira_fase.draw()
 
   for _, layerName in ipairs({ "fundo", "floor", "espinhos", "decoracao" }) do
     if mapa.layers[layerName] then
-    mapa:drawLayer(mapa.layers[layerName])
+      mapa:drawLayer(mapa.layers[layerName])
     end
   end
 
@@ -160,15 +162,17 @@ function primeira_fase.draw()
     e:draw()
   end
 
-  -- Desenhar pontos
-  for _, p in ipairs(pontos_coletaveis) do
-    love.graphics.setColor(1, 1, 0) -- amarelo
-    love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
+  -- Desenhar pontos com sprite
+  local img = pontos.getSprite()
+  if img then
+    for _, p in ipairs(pontos_coletaveis) do
+      local scale = 2 -- ajuste conforme necessário
+      local spriteW, spriteH = 16, 16 -- substitua pelo tamanho real do sprite, se diferente
+      love.graphics.draw(img, p.x, p.y, 0, scale, scale, spriteW / 2, spriteH / 2)
+    end
   end
-  love.graphics.setColor(1, 1, 1)
 
   player:draw()
-
   cam:detach()
 end
 
