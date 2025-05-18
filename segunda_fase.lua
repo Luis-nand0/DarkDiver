@@ -99,7 +99,8 @@ function segunda_fase.load()
             width           = obj.width,
             height          = obj.height,
             speed           = p.speed,
-            detectionRadius = p.detectionRadius
+            detectionRadius = p.detectionRadius,
+            fase = 2
           })
           table.insert(enemies, e)
         elseif p.isSentinela then

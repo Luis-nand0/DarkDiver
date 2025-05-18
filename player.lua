@@ -3,12 +3,13 @@ Player.__index = Player
 
 function Player.new(cam)
     local self = setmetatable({}, Player)
-    self.x, self.y = 0, 0
-    self.w, self.h = 48 , 48  
 
+    self.x, self.y = 0, 0
+    self.w, self.h = 48, 48
+
+    self.vx, self.vy = 0, 0
     self.speed = 300
     self.jumpForce = 425
-    self.vx, self.vy = 0, 0
     self.gravity = 1200
     self.acceleration = 2500
     self.friction = 2000
@@ -31,7 +32,9 @@ function Player.new(cam)
     self.jumpAnimTimer = 0
     self.jumping = false
     self.falling = false
+
     self.sprites = {}
+    self.sprite = nil
 
     return self
 end
@@ -39,21 +42,23 @@ end
 function Player:load(world, x, y)
     self.world = world
     self.x, self.y = x, y
-    self.world:add(self, self.x, self.y, self.w, self.h)
     self.dead = false
     self.reachedExit = false
 
+    self.world:add(self, self.x, self.y, self.w, self.h)
+
     self.sprites[1] = love.graphics.newImage("Spritesheets/driver2.png")
     self.sprites[2] = love.graphics.newImage("Spritesheets/diver3.png")
-    self.sprites[3] = love.graphics.newImage("Spritesheets/diver4.png") -- Sprite de pulo
-    self.sprites[4] = love.graphics.newImage("Spritesheets/diver5.png") -- Sprite de queda
-    self.sprites[5] = love.graphics.newImage("Spritesheets/diver6.png") -- Sprite de walljump
+    self.sprites[3] = love.graphics.newImage("Spritesheets/diver4.png") -- pulo
+    self.sprites[4] = love.graphics.newImage("Spritesheets/diver5.png") -- queda
+    self.sprites[5] = love.graphics.newImage("Spritesheets/diver6.png") -- walljump
     self.sprite = self.sprites[1]
 end
 
 function Player:update(dt, mapa)
     if self.dead or self.reachedExit then return end
 
+    -- Movimento horizontal
     local target = 0
     if love.keyboard.isDown("d", "right") then
         target = self.speed
@@ -77,6 +82,7 @@ function Player:update(dt, mapa)
         end
     end
 
+    -- Pulo
     if love.keyboard.isDown("space") and self.isGrounded then
         self.vy = -self.jumpForce
         self.isGrounded = false
@@ -86,12 +92,14 @@ function Player:update(dt, mapa)
         self.falling = false
     end
 
+    -- Gravidade
     local extraGravity = 0
     if love.keyboard.isDown("s", "down") and not self.isGrounded then
         extraGravity = 1500
     end
     self.vy = self.vy + (self.gravity + extraGravity) * dt
 
+    -- Movimento com colisão
     local goalX = self.x + self.vx * dt
     local goalY = self.y + self.vy * dt
     local actualX, actualY, cols, len = self.world:move(self, goalX, goalY)
@@ -99,27 +107,30 @@ function Player:update(dt, mapa)
 
     self.isGrounded = false
     self.canWallJump = false
+
     local exitFlag = false
 
     for i = 1, len do
         local col = cols[i]
+        local other = col.other
         local handled = false
 
-        if col.other.isCaranguejo or col.other.isSpike or col.other.isRebatedor then
+        if other.isCaranguejo or other.isSpike or other.isRebatedor then
             self.dead = true
         end
 
-        if col.other.isJumpBlock and col.normal.y < 0 and self.vy >= 0 then
-            self.vy = -(col.other.forcaDoPulo or 600)
+        if other.isJumpBlock and col.normal.y < 0 and self.vy >= 0 then
+            self.vy = -(other.forcaDoPulo or 600)
             handled = true
         end
 
-        if col.other.isWallJumpBlock and col.normal.x ~= 0 then
+        if other.isWallJumpBlock and col.normal.x ~= 0 then
             self.canWallJump = true
-            self.wallJumpDirection = col.other.jumpDirection
-            self.sprite = self.sprites[5] -- Altera para o sprite de walljump
+            self.wallJumpDirection = other.jumpDirection
+            self.sprite = self.sprites[5]
+
             if love.keyboard.isDown("space") then
-                self.vx = (self.wallJumpDirection == "left" and -500) or 500
+                self.vx = (self.wallJumpDirection == "left") and -500 or 500
                 self.vy = -400
                 self.canWallJump = false
             end
@@ -136,7 +147,7 @@ function Player:update(dt, mapa)
             end
         end
 
-        if col.other.isExit then
+        if other.isExit then
             exitFlag = true
         end
     end
@@ -145,7 +156,7 @@ function Player:update(dt, mapa)
         self.reachedExit = true
     end
 
-    -- Animação de pulo e queda
+    -- Animações
     if self.jumping then
         self.jumpAnimTimer = self.jumpAnimTimer - dt
         if self.jumpAnimTimer <= 0 then
@@ -154,13 +165,14 @@ function Player:update(dt, mapa)
         end
     elseif not self.isGrounded then
         self.falling = true
-        self.sprite = self.sprites[4] -- Sprite de queda
+        self.sprite = self.sprites[4]
     end
 
     if self.shootEnabled then
         self.shootCooldown = math.max(self.shootCooldown - dt, 0)
     end
 
+    -- Tiros
     for i = #self.bullets, 1, -1 do
         local b = self.bullets[i]
         b.x = b.x + b.vx * dt
@@ -172,6 +184,7 @@ function Player:update(dt, mapa)
         end
     end
 
+    -- Animação de corrida
     if math.abs(self.vx) > 10 then
         self.animTimer = self.animTimer + dt
         if self.animTimer >= 0.15 then
@@ -196,10 +209,10 @@ function Player:shoot(screenX, screenY)
     local size = 8
     local px = self.x + self.w / 2
     local py = self.y + self.h / 2
+
     local mx, my = self.cam:worldCoords(screenX, screenY)
     local dx, dy = mx - px, my - py
     local dist = math.sqrt(dx * dx + dy * dy)
-
     if dist == 0 then return end
 
     dx, dy = dx / dist, dy / dist
@@ -224,7 +237,7 @@ end
 
 function Player:draw()
     if not self.dead then
-        local scaleX = self.facing or 1
+        local scaleX = self.facing
         love.graphics.draw(
             self.sprite,
             self.x + self.w / 2, self.y + self.h / 2,
@@ -234,19 +247,18 @@ function Player:draw()
         )
     end
 
-    -- Desenha a hitbox (colisão) do player
-    love.graphics.setColor(1, 0, 0, 0.5) -- Vermelho semi-transparente
+    -- Hitbox do player
+    love.graphics.setColor(1, 0, 0, 0.5)
     love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-    love.graphics.setColor(1, 1, 1) -- Restaura a cor padrão
+    love.graphics.setColor(1, 1, 1)
 
-    -- Desenha os tiros
+    -- Tiros
     love.graphics.setColor(0, 1, 1)
     for _, b in ipairs(self.bullets) do
         love.graphics.rectangle("fill", b.x, b.y, b.w, b.h)
     end
     love.graphics.setColor(1, 1, 1)
 end
-
 
 function Player:getPosition()
     return self.x + self.w / 2, self.y + self.h / 2

@@ -11,8 +11,8 @@ local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
 local pontos     = require "pontos"
 local fonte      = require "fonte"
-local primeira_fase = {}
 
+local primeira_fase = {}
 local cam = Camera()
 primeira_fase.cam = cam
 
@@ -43,9 +43,10 @@ function primeira_fase.load()
   mapa:resize()
   pontos.reset()
   pontos.load("Spritesheets/nacho_sprite.png") -- <== define o sprite da fase
+
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
- 
+
   pontos_coletaveis = {}
 
   -- Zonas de saída
@@ -96,7 +97,8 @@ function primeira_fase.load()
             width           = obj.width,
             height          = obj.height,
             speed           = p.speed,
-            detectionRadius = p.detectionRadius
+            detectionRadius = p.detectionRadius,
+            fase = 1
           })
           table.insert(enemies, e)
 
@@ -152,27 +154,34 @@ end
 function primeira_fase.draw()
   cam:attach()
 
+  -- Desenha as bolhas com sprite
+  Blocos.draw()
+
+  -- Desenha camadas do Tiled
   for _, layerName in ipairs({ "fundo", "floor", "espinhos", "decoracao" }) do
     if mapa.layers[layerName] then
       mapa:drawLayer(mapa.layers[layerName])
     end
   end
 
+  -- Desenha inimigos
   for _, e in ipairs(enemies) do
     e:draw()
   end
 
-  -- Desenhar pontos com sprite
+  -- Desenha pontos coletáveis com sprite
   local img = pontos.getSprite()
   if img then
     for _, p in ipairs(pontos_coletaveis) do
-      local scale = 2 -- ajuste conforme necessário
-      local spriteW, spriteH = 16, 16 -- substitua pelo tamanho real do sprite, se diferente
+      local scale = 2
+      local spriteW, spriteH = 16, 16
       love.graphics.draw(img, p.x, p.y, 0, scale, scale, spriteW / 2, spriteH / 2)
     end
   end
 
+  -- Desenha o jogador
   player:draw()
+
   cam:detach()
 end
 
