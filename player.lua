@@ -1,6 +1,9 @@
 local Player = {}
 Player.__index = Player
 
+local soundFxJump = nil
+local bolhaSoundFx = love.audio.newSource("soundEffects/bubble-fx-343684.mp3", "static")
+local slimeSoundFx = love.audio.newSource("soundEffects/goopy-slime-4-219777.mp3", "static")
 function Player.new(cam)
     local self = setmetatable({}, Player)
 
@@ -53,6 +56,7 @@ function Player:load(world, x, y)
     self.sprites[4] = love.graphics.newImage("Spritesheets/diver5.png") -- queda
     self.sprites[5] = love.graphics.newImage("Spritesheets/diver6.png") -- walljump
     self.sprite = self.sprites[1]
+    soundFxJump = love.audio.newSource("soundEffects/cartoon-jump-6462.mp3", "static")
 end
 
 function Player:update(dt, mapa)
@@ -90,6 +94,8 @@ function Player:update(dt, mapa)
         self.jumpAnimTimer = 0.2
         self.jumping = true
         self.falling = false
+        soundFxJump:stop()
+        soundFxJump:play()
     end
 
     -- Gravidade
@@ -122,6 +128,8 @@ function Player:update(dt, mapa)
         if other.isJumpBlock and col.normal.y < 0 and self.vy >= 0 then
             self.vy = -(other.forcaDoPulo or 600)
             handled = true
+            bolhaSoundFx:stop()
+            bolhaSoundFx:play()
         end
 
         if other.isWallJumpBlock and col.normal.x ~= 0 then
@@ -133,6 +141,8 @@ function Player:update(dt, mapa)
                 self.vx = (self.wallJumpDirection == "left") and -500 or 500
                 self.vy = -400
                 self.canWallJump = false
+                slimeSoundFx:stop()
+                slimeSoundFx:play()
             end
             handled = true
         end
