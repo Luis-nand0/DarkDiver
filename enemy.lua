@@ -1,6 +1,6 @@
 local Enemy = {}
 Enemy.__index = Enemy
-
+local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
 function Enemy.new(world, x, y, props)
     local self = setmetatable({}, Enemy)
     self.world = world
@@ -71,6 +71,7 @@ function Enemy:update(dt, player)
 
             for i = 1, (len or 0) do
                 if cols[i].other == player then
+                    deadSounFx:play()
                     player.dead = true
                 end
             end

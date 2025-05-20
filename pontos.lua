@@ -8,7 +8,7 @@ local soundFxPoints = nil
 -- Carrega o sprite usado para desenhar os pontos coletáveis
 function Pontos.load(caminho)
     sprite = love.graphics.newImage(caminho or "sprites/ponto.png")
-    soundFxPoints = love.audio.newSource("soundEffects/collect-points-190037.mp3", "static")
+    soundFxPoints = love.audio.newSource("soundEffects/eating-sound-effect.mp3", "static")
 end
 
 function Pontos.getSprite()

@@ -2,6 +2,7 @@ local Sentinela = {}
 Sentinela.__index = Sentinela
 
 local shootSoundEffect = love.audio.newSource("soundEffects/whatsapp-whistle-notification.mp3", "static")
+local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
 
 function Sentinela.new(x, y, properties)
     local self = setmetatable({}, Sentinela)
@@ -77,6 +78,7 @@ function Sentinela:update(dt, player)
            bx + bw > px and
            by < py + ph and
            by + bh > py then
+            deadSounFx:play()
             player.dead = true
         end
 

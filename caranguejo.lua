@@ -1,5 +1,6 @@
 local Caranguejo = {}
 Caranguejo.__index = Caranguejo
+local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
 
 function Caranguejo.new(x, y, properties)
     assert(properties, "Caranguejo.new: faltam propriedades!")
@@ -79,6 +80,7 @@ function Caranguejo:update(dt, player)
     and player.x + player.w > self.x
     and player.y < self.y + self.height
     and player.y + player.h > self.y then
+        deadSounFx:play()
         player.dead = true
     end
 end

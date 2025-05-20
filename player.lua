@@ -4,6 +4,8 @@ Player.__index = Player
 local soundFxJump = nil
 local bolhaSoundFx = love.audio.newSource("soundEffects/bubble-fx-343684.mp3", "static")
 local slimeSoundFx = love.audio.newSource("soundEffects/goopy-slime-4-219777.mp3", "static")
+local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
+
 function Player.new(cam)
     local self = setmetatable({}, Player)
 
@@ -122,6 +124,7 @@ function Player:update(dt, mapa)
         local handled = false
 
         if other.isCaranguejo or other.isSpike or other.isRebatedor then
+            deadSounFx:play()
             self.dead = true
         end
 
