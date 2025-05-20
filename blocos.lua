@@ -20,7 +20,7 @@ function Blocos.carregar(world, mapa)
                     w = obj.width,
                     h = obj.height,
                     isJumpBlock = true,
-                    forcaDoPulo = obj.properties.forcaDoPulo,
+                   forcaDoPulo = obj.properties.forcaDoPulo,
                     sprite = spriteBolha
                 }
                 world:add(bloco, bloco.x, bloco.y, bloco.w, bloco.h)

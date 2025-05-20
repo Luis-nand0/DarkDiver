@@ -152,7 +152,7 @@ end
 function segunda_fase.draw()
   cam:attach()
 
-  for _, layerName in ipairs({ "fundo", "floor", "blocos" }) do
+  for _, layerName in ipairs({ "fundo", "floor", "blocos", "decoracao" }) do
     if mapa.layers[layerName] then
       mapa:drawLayer(mapa.layers[layerName])
     end
