@@ -1,6 +1,8 @@
 -- Boss.lua
 local Boss = {}
 Boss.__index = Boss
+local shootSounFx = love.audio.newSource("soundEffects/laser-fire.mp3", "static")
+local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
 
 -- Função para checar colisão AABB
 local function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2)
@@ -66,6 +68,7 @@ function Boss:update(dt, player)
             self.x, self.y = ax, ay
             for i=1, len do
                 if cols[i].other == player then
+                    deadSounFx:play()
                     player.dead = true
                 end
             end
@@ -74,6 +77,8 @@ function Boss:update(dt, player)
         -- atirar
         self.fireCooldown = self.fireCooldown - dt
         if self.fireCooldown <= 0 then
+            shootSounFx:stop()
+            shootSounFx:play()
             self.fireCooldown = self.fireRate
             self:shoot(dx, dy)
         end
