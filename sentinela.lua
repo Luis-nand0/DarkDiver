@@ -1,6 +1,8 @@
 local Sentinela = {}
 Sentinela.__index = Sentinela
 
+local shootSoundEffect = love.audio.newSource("soundEffects/whatsapp-whistle-notification.mp3", "static")
+
 function Sentinela.new(x, y, properties)
     local self = setmetatable({}, Sentinela)
     self.x, self.y = x, y
@@ -49,7 +51,8 @@ function Sentinela:update(dt, player)
     if dist < self.range and self.cooldown <= 0 then
         local frameIndex = self.bulletFrameIndex
         self.bulletFrameIndex = self.bulletFrameIndex % #self.bulletFrames + 1
-
+        shootSoundEffect:stop()
+        shootSoundEffect:play()
         table.insert(self.bullets, {
             x = self.x + self.w / 2,
             y = self.y + self.h / 2,
