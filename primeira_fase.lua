@@ -165,11 +165,9 @@ function primeira_fase.draw()
   
   cam:attach()
 
-    -- Desenha as bolhas (blocos) com sprite
-    Blocos.draw()
 
     -- Desenha as camadas do Tiled
-    for _, layerName in ipairs({ "fundo", "floor", "espinhos", "decoracao" }) do
+    for _, layerName in ipairs({ "fundo", "decoracao" , "espinhos", "floor" }) do
       if mapa.layers[layerName] then
         mapa:drawLayer(mapa.layers[layerName])
       end
