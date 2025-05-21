@@ -11,6 +11,7 @@ local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
 local fonte      = require "fonte"
 local pontos     = require "pontos"
+local youWin = love.audio.newSource("soundEffects/street-fighter-ii-you-win-perfect.mp3", "static")
 
 local terceira_fase = {}
 local cam = Camera()
@@ -61,9 +62,11 @@ function terceira_fase.load()
   local exitLayer = mapa.layers["exitZone"]
   if exitLayer and exitLayer.objects then
     for _, obj in ipairs(exitLayer.objects) do
+   
       if obj.properties and obj.properties.isExit then
         local zone = { x = obj.x, y = obj.y, w = obj.width, h = obj.height, isExit = true }
         world:add(zone, obj.x, obj.y, obj.width, obj.height)
+      
       end
     end
   end
@@ -160,7 +163,9 @@ function terceira_fase.update(dt)
       -- jogador atingiu saída mas boss ainda vivo: bloqueia saída
       return "alive"
     end
+    youWin:play()
     return "exit"
+    
   else
     return "alive"
   end

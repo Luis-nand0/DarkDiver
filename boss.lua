@@ -1,6 +1,9 @@
 local Boss = {}
 Boss.__index = Boss
-
+local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
+local hitPlayer = love.audio.newSource("soundEffects/bongo-hit.mp3", "static")
+local explosion = love.audio.newSource("soundEffects/cannon.mp3", "static")
+local shootBoss = love.audio.newSource("soundEffects/laser-fire.mp3", "static")
 -- AABB collision
 local function checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
     return x1 < x2+w2 and x1+w1 > x2
@@ -69,7 +72,7 @@ function Boss.new(world, x, y, props)
     self.bulletFrames    = {}
     for i=0,3 do
         table.insert(self.bulletFrames, love.graphics.newQuad(
-            i*32,0,32,32,sw,sh
+            i*64,0,64,64,sw,sh
         ))
     end
     self.bulletFrameIndex = 1
@@ -144,14 +147,15 @@ function Boss:update(dt, player)
             self.x, self.y = ax, ay
             for i=1,len do
                 if cols[i].other==player then
-                 
+                    deadSounFx:play()
                     player.dead = true
                 end
             end
         end
         self.fireCooldown = self.fireCooldown - dt
         if self.fireCooldown <= 0 then
-          
+            shootBoss:stop()
+            shootBoss:play()
             self.fireCooldown = self.fireRate
             self:shoot(dx, dy)
         end
@@ -162,6 +166,8 @@ function Boss:update(dt, player)
         local b = player.bullets[i]
         if checkCollision(b.x,b.y,b.w,b.h, self.x,self.y,self.w,self.h) then
             self:hit(10)
+            hitPlayer:stop()
+            hitPlayer:play()
             table.remove(player.bullets, i)
         end
     end
@@ -209,6 +215,7 @@ function Boss:hit(damage)
 end
 
 function Boss:die()
+    explosion:play()
     self.isDead    = true
     self.exploding = true
   
