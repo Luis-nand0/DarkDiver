@@ -260,10 +260,7 @@ function Player:draw()
         )
     end
 
-    -- Hitbox do player
-    love.graphics.setColor(1, 0, 0, 0.5)
-    love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
-    love.graphics.setColor(1, 1, 1)
+  
 
     -- Tiros
     love.graphics.setColor(0, 1, 1)

@@ -18,7 +18,11 @@ segunda_fase.cam = cam
 local world, mapa, player
 local enemies = {}
 local pontos_coletaveis = {}
-local sprite_ponto       -- sprite exclusivo da segunda fase
+local sprite_ponto
+
+-- Fundo da fase
+local backgroundImage
+local backgroundScale = 1
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -43,7 +47,6 @@ function segunda_fase.load()
   mapa:resize()
   pontos.reset()
 
-  -- Carrega sprite específico da segunda fase
   sprite_ponto = love.graphics.newImage("Spritesheets/nacho.fase2_sprite.png")
 
   Blocos.carregar(world, mapa)
@@ -119,6 +122,13 @@ function segunda_fase.load()
       end
     end
   end
+
+  -- Carrega imagem de fundo
+  backgroundImage = love.graphics.newImage("maps/fundo2.png")
+  backgroundScale = math.max(
+    love.graphics.getWidth() / backgroundImage:getWidth(),
+    love.graphics.getHeight() / backgroundImage:getHeight()
+  )
 end
 
 function segunda_fase.update(dt)
@@ -152,8 +162,17 @@ end
 function segunda_fase.draw()
   cam:attach()
 
-  for _, layerName in ipairs({ "fundo", "floor", "blocos", "decoracao" }) do
-    if mapa.layers[layerName] then
+  -- Fundo desenhado antes de tudo
+  love.graphics.draw(backgroundImage,
+    cam.x - love.graphics.getWidth() / 2,
+    cam.y - love.graphics.getHeight() / 2,
+    0,
+    backgroundScale,
+    backgroundScale
+  )
+
+  for _, layerName in ipairs({ "fundo", "blocos", "decoracao", "floor" }) do
+    if mapa.layers[layerName] then 
       mapa:drawLayer(mapa.layers[layerName])
     end
   end
@@ -162,7 +181,6 @@ function segunda_fase.draw()
     e:draw()
   end
 
-  -- Desenhar pontos com sprite local
   if sprite_ponto then
     local scale = 2
     local spriteW, spriteH = 16, 16

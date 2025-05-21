@@ -20,6 +20,10 @@ local world, mapa, player
 local enemies = {}
 local pontos_coletaveis = {}
 
+-- Background
+local fundoImagem
+local scaleX, scaleY
+
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
   local layer = mapa.layers["spawn"]
@@ -42,13 +46,20 @@ function primeira_fase.load()
   mapa  = sti("maps/primeira_fase.lua", { "bump" })
   mapa:resize()
   pontos.reset()
-  pontos.load("Spritesheets/nacho_sprite.png") -- <== define o sprite da fase
+  pontos.load("Spritesheets/nacho_sprite.png") -- define o sprite da fase
 
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
 
   pontos_coletaveis = {}
 
+  -- Carrega imagem de fundo (fixa) e ajusta a escala para preencher a tela
+  fundoImagem = love.graphics.newImage("maps/fundo.png")
+  local bgW, bgH = fundoImagem:getWidth(), fundoImagem:getHeight()
+  local screenW, screenH = love.graphics.getWidth(), love.graphics.getHeight()
+  scaleX = screenW / bgW
+  scaleY = screenH / bgH
+  
   -- Zonas de saída
   local exitLayer = mapa.layers["exitZone"]
   if exitLayer and exitLayer.objects then
@@ -98,20 +109,17 @@ function primeira_fase.load()
             height          = obj.height,
             speed           = p.speed,
             detectionRadius = p.detectionRadius,
-            fase = 1
+            fase            = 1
           })
           table.insert(enemies, e)
-
         elseif p.isSentinela then
           local s = Sentinela.new(obj.x, obj.y)
           s:load(world)
           table.insert(enemies, s)
-
         elseif p.isRebatedor then
           local r = Rebatedor.new(obj.x, obj.y, p)
           r:load(world)
           table.insert(enemies, r)
-
         elseif p.isCaranguejo then
           local c = Caranguejo.new(obj.x, obj.y, p)
           c:load(world)
@@ -152,35 +160,38 @@ function primeira_fase.update(dt)
 end
 
 function primeira_fase.draw()
+  -- Desenha o fundo fixo (fora da câmera)
+  love.graphics.draw(fundoImagem, 0, 0, 0, scaleX, scaleY)
+  
   cam:attach()
 
-  -- Desenha as bolhas com sprite
-  Blocos.draw()
+    -- Desenha as bolhas (blocos) com sprite
+    Blocos.draw()
 
-  -- Desenha camadas do Tiled
-  for _, layerName in ipairs({ "fundo", "floor", "espinhos", "decoracao" }) do
-    if mapa.layers[layerName] then
-      mapa:drawLayer(mapa.layers[layerName])
+    -- Desenha as camadas do Tiled
+    for _, layerName in ipairs({ "fundo", "floor", "espinhos", "decoracao" }) do
+      if mapa.layers[layerName] then
+        mapa:drawLayer(mapa.layers[layerName])
+      end
     end
-  end
 
-  -- Desenha inimigos
-  for _, e in ipairs(enemies) do
-    e:draw()
-  end
-
-  -- Desenha pontos coletáveis com sprite
-  local img = pontos.getSprite()
-  if img then
-    for _, p in ipairs(pontos_coletaveis) do
-      local scale = 2
-      local spriteW, spriteH = 16, 16
-      love.graphics.draw(img, p.x, p.y, 0, scale, scale, spriteW / 2, spriteH / 2)
+    -- Desenha os inimigos
+    for _, e in ipairs(enemies) do
+      e:draw()
     end
-  end
 
-  -- Desenha o jogador
-  player:draw()
+    -- Desenha os pontos coletáveis com sprite
+    local img = pontos.getSprite()
+    if img then
+      for _, p in ipairs(pontos_coletaveis) do
+        local scale = 2
+        local spriteW, spriteH = 16, 16
+        love.graphics.draw(img, p.x, p.y, 0, scale, scale, spriteW / 2, spriteH / 2)
+      end
+    end
+
+    -- Desenha o jogador
+    player:draw()
 
   cam:detach()
 end

@@ -9,7 +9,7 @@ local Boss       = require "boss"
 local Sentinela  = require "sentinela"
 local Rebatedor  = require "rebatedor"
 local Caranguejo = require "caranguejo"
-local fonte = require "fonte"
+local fonte      = require "fonte"
 local pontos     = require "pontos"
 
 local terceira_fase = {}
@@ -18,8 +18,12 @@ terceira_fase.cam = cam   -- expõe a câmera para uso externo
 
 local world, mapa, player
 local enemies = {}
-local pontos_coletaveis = {}  -- NOVO
-local boss  -- variável para referência única ao boss
+local pontos_coletaveis = {}
+local boss
+
+-- Variáveis para background
+local backgroundImage
+local backgroundScale = 1
 
 local function encontrarSpawn(mapa)
   local x, y = 100, 100
@@ -36,10 +40,8 @@ local function encontrarSpawn(mapa)
 end
 
 function terceira_fase.load()
-
-
   local fontArial = love.graphics.newFont("fonts/arial.ttf", 18)
-    fonte.setar(fontArial)
+  fonte.setar(fontArial)
 
   world = bump.newWorld(32)
   mapa  = sti("maps/terceira_fase.lua", { "bump" })
@@ -47,6 +49,13 @@ function terceira_fase.load()
   pontos.reset()
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
+
+  -- Carregar imagem de fundo e calcular escala para cobrir a tela
+  backgroundImage = love.graphics.newImage("maps/fundo3.png")
+  backgroundScale = math.max(
+    love.graphics.getWidth() / backgroundImage:getWidth(),
+    love.graphics.getHeight() / backgroundImage:getHeight()
+  )
 
   -- Zonas de saída
   local exitLayer = mapa.layers["exitZone"]
@@ -59,20 +68,20 @@ function terceira_fase.load()
     end
   end
 
-   -- Carrega pontos do mapa
-   local pontoLayer = mapa.layers["pontos"]
-   if pontoLayer and pontoLayer.objects then
-     for _, obj in ipairs(pontoLayer.objects) do
-       if obj.properties and obj.properties.isPoint then
-         table.insert(pontos_coletaveis, {
-           x = obj.x,
-           y = obj.y,
-           w = obj.width or 16,
-           h = obj.height or 16
-         })
-       end
-     end
-   end
+  -- Carrega pontos do mapa
+  local pontoLayer = mapa.layers["pontos"]
+  if pontoLayer and pontoLayer.objects then
+    for _, obj in ipairs(pontoLayer.objects) do
+      if obj.properties and obj.properties.isPoint then
+        table.insert(pontos_coletaveis, {
+          x = obj.x,
+          y = obj.y,
+          w = obj.width or 16,
+          h = obj.height or 16
+        })
+      end
+    end
+  end
 
   -- Oculta colisões visuais
   for _, n in ipairs({ "Walls_fase3"}) do
@@ -132,8 +141,7 @@ function terceira_fase.update(dt)
     e:update(dt, player)
   end
 
-    utils.coletarPontos(player, pontos_coletaveis)
-
+  utils.coletarPontos(player, pontos_coletaveis)
 
   local px, py = player:getPosition()
   utils.limitarCamera(
@@ -160,6 +168,19 @@ end
 
 function terceira_fase.draw()
   cam:attach()
+
+  -- Desenha background fixo seguindo a câmera
+  if backgroundImage then
+    love.graphics.draw(
+      backgroundImage,
+      cam.x - love.graphics.getWidth() / 2,
+      cam.y - love.graphics.getHeight() / 2,
+      0,
+      backgroundScale,
+      backgroundScale
+    )
+  end
+
   -- Desenho do mapa e entidades
   for _, layerName in ipairs({ "fundo", "floor", "bpulo", "espinhos"}) do
     if mapa.layers[layerName] then
@@ -170,8 +191,8 @@ function terceira_fase.draw()
   for _, e in ipairs(enemies) do
     e:draw()
   end
- 
-  -- Desenhar pontos
+
+  -- Desenhar pontos coletáveis
   for _, p in ipairs(pontos_coletaveis) do
     love.graphics.setColor(1, 1, 0) -- amarelo
     love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
@@ -201,7 +222,6 @@ function terceira_fase.draw()
   end
 end
 
--- Adiciona o tratamento de clique do mouse
 function terceira_fase.mousepressed(x, y, button)
   if player and player.mousepressed then
     player:mousepressed(x, y, button)
