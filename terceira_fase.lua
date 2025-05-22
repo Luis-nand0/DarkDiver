@@ -1,26 +1,27 @@
-local sti        = require "libs.sti"
-local bump       = require "libs.bump"
-local Camera     = require "libs.hump.camera"
-local utils      = require "utils"
-local Player     = require "player"
-local Blocos     = require "blocos"
-local Enemy      = require "enemy"
-local Boss       = require "boss"
-local Sentinela  = require "sentinela"
-local Rebatedor  = require "rebatedor"
-local Caranguejo = require "caranguejo"
-local fonte      = require "fonte"
-local pontos     = require "pontos"
+local sti         = require "libs.sti"
+local bump        = require "libs.bump"
+local Camera      = require "libs.hump.camera"
+local utils       = require "utils"
+local Player      = require "player"
+local Blocos      = require "blocos"
+local Enemy       = require "enemy"
+local Boss        = require "boss"
+local Sentinela   = require "sentinela"
+local Rebatedor   = require "rebatedor"
+local Caranguejo  = require "caranguejo"
+local fonte       = require "fonte"
+local pontos      = require "pontos"
 local youWin = love.audio.newSource("soundEffects/street-fighter-ii-you-win-perfect.mp3", "static")
 
 local terceira_fase = {}
 local cam = Camera()
-terceira_fase.cam = cam   -- expõe a câmera para uso externo
+terceira_fase.cam = cam
 
 local world, mapa, player
 local enemies = {}
 local pontos_coletaveis = {}
 local boss
+terceira_fase.exitZone = nil
 
 -- Variáveis para background
 local backgroundImage
@@ -48,25 +49,29 @@ function terceira_fase.load()
   mapa  = sti("maps/terceira_fase.lua", { "bump" })
   mapa:resize()
   pontos.reset()
+  sprite_ponto = love.graphics.newImage("Spritesheets/nacho.fase2_sprite.png")
   Blocos.carregar(world, mapa)
   mapa:bump_init(world)
+  pontos_coletaveis = {}
 
-  -- Carregar imagem de fundo e calcular escala para cobrir a tela
   backgroundImage = love.graphics.newImage("maps/fundo3.png")
   backgroundScale = math.max(
     love.graphics.getWidth() / backgroundImage:getWidth(),
     love.graphics.getHeight() / backgroundImage:getHeight()
   )
 
-  -- Zonas de saída
+  -- Zonas de saída (não adiciona colisão no mundo!)
   local exitLayer = mapa.layers["exitZone"]
   if exitLayer and exitLayer.objects then
     for _, obj in ipairs(exitLayer.objects) do
-   
       if obj.properties and obj.properties.isExit then
-        local zone = { x = obj.x, y = obj.y, w = obj.width, h = obj.height, isExit = true }
-        world:add(zone, obj.x, obj.y, obj.width, obj.height)
-      
+        terceira_fase.exitZone = {
+          x = obj.x,
+          y = obj.y,
+          w = obj.width,
+          h = obj.height,
+          isExit = true
+        }
       end
     end
   end
@@ -91,12 +96,12 @@ function terceira_fase.load()
     if mapa.layers[n] then mapa.layers[n].visible = false end
   end
 
-  -- Spawna jogador (agora passando a câmera)
+  -- Spawna jogador
   local sx, sy = encontrarSpawn(mapa)
   player = Player.new(cam)
   player:load(world, sx, sy)
-  player.shootEnabled = true  -- Ativa o tiro apenas nesta fase
-  terceira_fase.player = player   -- expõe o player para uso externo
+  player.shootEnabled = true
+  terceira_fase.player = player
 
   -- Carrega inimigos
   enemies = {}
@@ -113,7 +118,7 @@ function terceira_fase.load()
             speed           = p.speed,
             detectionRadius = p.detectionRadius
           })
-          boss = e               -- guarda referência ao boss
+          boss = e
           table.insert(enemies, e)
 
         elseif p.isSentinela then
@@ -155,17 +160,27 @@ function terceira_fase.update(dt)
     love.graphics.getHeight()
   )
 
-  -- requer derrotar boss antes de sair
+  -- Verifica se player está na zona de saída
+  if terceira_fase.exitZone and boss then
+    local px, py, pw, ph = player:getRect()
+    local ez = terceira_fase.exitZone
+
+    local overlaps =
+      px + pw > ez.x and px < ez.x + ez.w and
+      py + ph > ez.y and py < ez.y + ez.h
+
+    player.reachedExit = overlaps
+  end
+
+  -- lógica de saída
   if player.dead then
     return "dead"
   elseif player.reachedExit then
     if boss and not boss.isDead then
-      -- jogador atingiu saída mas boss ainda vivo: bloqueia saída
-      return "alive"
+      return "alive" -- impede sair, mas permite continuar andando
     end
     youWin:play()
     return "exit"
-    
   else
     return "alive"
   end
@@ -174,7 +189,6 @@ end
 function terceira_fase.draw()
   cam:attach()
 
-  -- Desenha background fixo seguindo a câmera
   if backgroundImage then
     love.graphics.draw(
       backgroundImage,
@@ -186,8 +200,7 @@ function terceira_fase.draw()
     )
   end
 
-  -- Desenho do mapa e entidades
-  for _, layerName in ipairs({ "fundo", "floor", "bpulo", "espinhos"}) do
+  for _, layerName in ipairs({ "fundo", "decoracao", "floor", "bpulo", "espinhos"}) do
     if mapa.layers[layerName] then
       mapa:drawLayer(mapa.layers[layerName])
     end
@@ -197,22 +210,24 @@ function terceira_fase.draw()
     e:draw()
   end
 
-  -- Desenhar pontos coletáveis
-  for _, p in ipairs(pontos_coletaveis) do
-    love.graphics.setColor(1, 1, 0) -- amarelo
-    love.graphics.rectangle("fill", p.x, p.y, p.w, p.h)
+  -- Pontos coletáveis
+  if sprite_ponto then
+    local scale = 2
+    local spriteW, spriteH = 16, 16
+    for _, p in ipairs(pontos_coletaveis) do
+      love.graphics.draw(sprite_ponto, p.x + spriteW / 2, p.y + spriteH / 2, 0, scale, scale, spriteW / 2, spriteH / 2)
+    end
   end
-  love.graphics.setColor(1, 1, 1)
 
   player:draw()
   cam:detach()
 
-  -- HUD (barra de vida do boss) na parte inferior
+  -- HUD da vida do boss
   if boss and not boss.isDead then
     local sw, sh  = love.graphics.getWidth(), love.graphics.getHeight()
     local barW, barH = sw * 0.6, 20
     local bx = (sw - barW) / 2
-    local by = sh * 0.9  -- posiciona a 90% da altura da tela
+    local by = sh * 0.9
 
     local pct = math.max(boss.health, 0) / boss.maxHealth
 

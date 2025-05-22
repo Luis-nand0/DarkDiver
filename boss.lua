@@ -4,7 +4,7 @@ local deadSounFx = love.audio.newSource("soundEffects/erro.mp3", "static")
 local hitPlayer = love.audio.newSource("soundEffects/bongo-hit.mp3", "static")
 local explosion = love.audio.newSource("soundEffects/cannon.mp3", "static")
 local shootBoss = love.audio.newSource("soundEffects/laser-fire.mp3", "static")
--- AABB collision
+
 local function checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
     return x1 < x2+w2 and x1+w1 > x2
        and y1 < y2+h2 and y1+h1 > y2
@@ -26,7 +26,7 @@ for i=0,frameCount-1 do
     )
 end
 
--- Explosion spritesheet (5 frames 128×128)
+-- Sprite explosao
 local expImage    = love.graphics.newImage("Spritesheets/explosion.png")
 local expFrameW   = 128
 local expFrameH   = 128
@@ -41,6 +41,7 @@ for i=0,expFrames-1 do
     )
 end
 
+-- dados do boss
 function Boss.new(world, x, y, props)
     local self = setmetatable({}, Boss)
     self.world = world
@@ -48,16 +49,18 @@ function Boss.new(world, x, y, props)
     self.w, self.h    = props.width or frameWidth, props.height or frameHeight
     self.scale        = props.scale or 2.5
 
+    -- movimentacao
     self.speed         = props.speed or 120
     self.detectionRadius = props.detectionRadius or 200
     self.chasing       = false
 
+    -- vida
     self.maxHealth     = props.health or 175
     self.health        = self.maxHealth
 
     self.bullets       = {}
     self.fireCooldown  = 0
-    self.fireRate      = props.fireRate or 1.5
+    self.fireRate      = props.fireRate or 2
 
     self.invincibleTime = 0
     self.isDead        = false
@@ -78,7 +81,6 @@ function Boss.new(world, x, y, props)
     self.bulletFrameIndex = 1
     self.bulletAnimTimer  = 0
 
-    -- explosão flags e animação\    self.exploding    = false
     self.expTimer     = 0
     self.expFrame     = 1
 
@@ -87,7 +89,7 @@ function Boss.new(world, x, y, props)
 end
 
 function Boss:update(dt, player)
-    -- Explosão: anima spritesheet e remove no fim
+   -- explosao
     if self.exploding then
         self.expTimer = self.expTimer + dt
         if self.expTimer >= expSpeed then
@@ -104,6 +106,7 @@ function Boss:update(dt, player)
         return
     end
 
+    -- morte boss
     if self.isDead then return end
 
     -- Animação do boss
@@ -250,21 +253,26 @@ end
  
     if self.removed then return end
 
-    -- Boss normal
-    if self.invincibleTime>0 and math.floor(self.invincibleTime*10)%2==0 then
+     -- Boss normal
+     if self.invincibleTime>0 and math.floor(self.invincibleTime*10)%2==0 then
         love.graphics.setColor(1,0,0)
-    else love.graphics.setColor(1,1,1) end
+    else
+        love.graphics.setColor(1,1,1)
+    end
 
     love.graphics.draw(spriteImage, quads[self.currentFrame],
         self.x-(frameWidth*(self.scale-1))/2,
         self.y-(frameHeight*(self.scale-1))/2,
         0,self.scale,self.scale
     )
+
+    -- Resetar cor antes de desenhar projéteis
+    love.graphics.setColor(1,1,1)
+
     -- projéteis
     for _,b in ipairs(self.bullets) do
         love.graphics.draw(self.bulletSprite, self.bulletFrames[b.frame],b.x,b.y)
     end
-    love.graphics.setColor(1,1,1)
 end
 
 return Boss

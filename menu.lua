@@ -16,7 +16,7 @@ function Menu.update(dt, changeState)
 
     -- Jogar (fase principal)
     if suit.Button("Jogar", bx, by, bw, bh).hit then
-        changeState("primeira_fase")
+        changeState("_fase")
     end
 
     -- Sair

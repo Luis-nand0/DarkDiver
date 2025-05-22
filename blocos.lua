@@ -6,10 +6,10 @@ Blocos.lista = blocos
 local spriteBolha = love.graphics.newImage("Spritesheets/bolha_spritesheet.png") -- sprite das bolhas
 
 function Blocos.carregar(world, mapa)
-    -- Limpa a lista anterior (caso recarregue a fase)
+
     for i = #blocos, 1, -1 do table.remove(blocos, i) end
 
-    -- Blocos de pulo (bolhas)
+    -- Blocos de pulo 
     local jumpLayer = mapa.layers.jumpBlocks
     if jumpLayer and jumpLayer.objects then
         for _, obj in ipairs(jumpLayer.objects) do
@@ -48,7 +48,7 @@ function Blocos.carregar(world, mapa)
         end
     end
 
-    -- Blocos de espinhos (spikes)
+    -- Blocos de espinhos 
     local spikeLayer = mapa.layers.spikes
     if spikeLayer and spikeLayer.objects then
         for _, obj in ipairs(spikeLayer.objects) do
@@ -66,7 +66,7 @@ function Blocos.carregar(world, mapa)
         end
     end
 
-    -- Blocos de saída (exit)
+    -- Saída 
     local exitLayer = mapa.layers.exits
     if exitLayer and exitLayer.objects then
         for _, obj in ipairs(exitLayer.objects) do
@@ -91,7 +91,6 @@ function Blocos.draw()
             love.graphics.setColor(1, 1, 1)
             love.graphics.draw(bloco.sprite, bloco.x, bloco.y)
         end
-        -- Se quiser desenhar outros blocos com sprites futuramente, você pode estender aqui
     end
 end
 
