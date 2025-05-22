@@ -5,21 +5,22 @@ local terceira_fase = require "terceira_fase"
 local menu_respawn  = require "menu_respawn"
 local gameOverMenu  = require "GameOverMenu"
 local Pontos        = require "pontos"
-local fonte         = require "fonte"  -- ADICIONADO
+local fonte         = require "fonte"
+local Cutscene      = require "cutscene"
 
--- Estado principal: "menu", "primeira_fase", "segunda_fase", "terceira_fase"
 local gameState = "menu"
--- Overlay ativo: nil, "respawn" ou "gameover"
 local overlay = nil
--- Em qual fase o jogador morreu
 local lastPhase = nil
-
--- Buffer para detectar teclas
 local keyBuffer = {}
 
+local cutscene = nil
+local cutsceneType = nil  -- "intro", "entre2e3", "final"
 
 function love.keypressed(key)
     keyBuffer[key] = true
+    if gameState == "cutscene" and cutscene then
+        cutscene:keypressed(key)
+    end
 end
 
 function love.keyboard.wasPressed(key)
@@ -43,18 +44,13 @@ function love.mousepressed(x, y, button)
 end
 
 function love.load()
-
-
- 
-    love.window.setMode(0, 0, { fullscreen = true }) 
-
+    love.window.setMode(0, 0, { fullscreen = true })
     menu.load()
     primeira_fase.load()
     segunda_fase.load()
     terceira_fase.load()
     menu_respawn.load()
     gameOverMenu.load()
-
     FontToPontos = love.graphics.newFont(40)
 end
 
@@ -78,7 +74,6 @@ function love.update(dt)
             end
         end)
         return
-
     elseif overlay == "respawn" then
         menu_respawn.update(dt, function(confirm)
             if confirm == true then
@@ -104,8 +99,46 @@ function love.update(dt)
 
     if gameState == "menu" then
         menu.update(dt, function(choice)
-            gameState = choice
+            if choice == "primeira_fase" then
+                cutscene = Cutscene.new({
+                    "cutscenes/Intro/intr01.png",
+                    "cutscenes/Intro/intro02.png",
+                    "cutscenes/Intro/intro03.png",
+                    "cutscenes/Intro/intro04.png",
+                    "cutscenes/Intro/intro05.png",
+                    "cutscenes/Intro/intro06.png",
+                    "cutscenes/Intro/intro07.png",
+                    "cutscenes/Intro/intro08.png",
+                    "cutscenes/Intro/intro09.png",
+                    "cutscenes/Intro/intro10.png",
+                    "cutscenes/Intro/intro11.png",
+                    "cutscenes/Intro/intro12.png",
+                    "cutscenes/Intro/intro13.png",
+                    "cutscenes/Intro/intro14.png",
+                    "cutscenes/Intro/intro15.png",
+                    "cutscenes/Intro/intro16.png",
+                })
+                cutsceneType = "intro"
+                gameState = "cutscene"
+            else
+                gameState = choice
+            end
         end)
+
+    elseif gameState == "cutscene" then
+        if cutscene.finished then
+            if cutsceneType == "intro" then
+                primeira_fase.load()
+                gameState = "primeira_fase"
+            elseif cutsceneType == "entre2e3" then
+                terceira_fase.load()
+                gameState = "terceira_fase"
+            elseif cutsceneType == "final" then
+                gameState = "menu"
+            end
+        else
+            cutscene:update(dt)
+        end
 
     elseif gameState == "primeira_fase" then
         local status = primeira_fase.update(dt)
@@ -123,8 +156,21 @@ function love.update(dt)
             lastPhase = "segunda_fase"
             overlay = "gameover"
         elseif status == "exit" then
-            terceira_fase.load()
-            gameState = "terceira_fase"
+            cutscene = Cutscene.new({
+                "cutscenes/boss/boss_scene.png",
+                "cutscenes/boss/boss_scene2.png",
+                "cutscenes/boss/boss_scene3.png",
+                "cutscenes/boss/boss_scene4.png",
+                "cutscenes/boss/boss_scene5.png",
+                "cutscenes/boss/boss_scene6.png",
+                "cutscenes/boss/boss_scene7.png",
+                "cutscenes/boss/boss_scene8.png",
+                "cutscenes/boss/boss_scene9.png",
+                "cutscenes/boss/boss_scene10.png",
+                -- adicione mais imagens conforme necessário
+            })
+            cutsceneType = "entre2e3"
+            gameState = "cutscene"
         end
 
     elseif gameState == "terceira_fase" then
@@ -133,7 +179,22 @@ function love.update(dt)
             lastPhase = "terceira_fase"
             overlay = "gameover"
         elseif status == "exit" then
-            gameState = "menu"
+            cutscene = Cutscene.new({
+                "cutscenes/final/final-scene.png",
+                "cutscenes/final/final-scene2.png",
+                "cutscenes/final/final-scene3.png",
+                "cutscenes/final/final-scene4.png",
+                "cutscenes/final/final-scene5.png",
+                "cutscenes/final/final-scene6.png",
+                "cutscenes/final/final-scene7.png",
+                "cutscenes/final/final-scene8.png",
+                "cutscenes/final/final-scene9.png",
+                "cutscenes/final/final-scene10.png",
+                "cutscenes/final/final-scene11.png",
+                -- adicione mais imagens conforme necessário
+            })
+            cutsceneType = "final"
+            gameState = "cutscene"
         end
     end
 end
@@ -141,6 +202,8 @@ end
 function love.draw()
     if gameState == "menu" then
         menu.draw()
+    elseif gameState == "cutscene" and cutscene then
+        cutscene:draw()
     elseif gameState == "primeira_fase" then
         primeira_fase.draw()
         FontToPontos = love.graphics.newFont("fonts/Ridiculo.ttf", 40)

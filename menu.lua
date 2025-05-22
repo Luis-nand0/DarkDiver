@@ -1,7 +1,10 @@
 local suit = require "libs.suit"
 local Menu = {}
 
+local backgroundImage
+
 function Menu.load()
+    backgroundImage = love.graphics.newImage("cutscenes/menu_background.png") -- coloque sua imagem na pasta 'imagens'
 end
 
 -- dt: delta time
@@ -11,14 +14,9 @@ function Menu.update(dt, changeState)
     local bw, bh = 200, 40
     local bx, by = (w - bw) / 2, h / 2
 
-    -- Primeira Fase
-    if suit.Button("Primeira Fase", bx, by - 60, bw, bh).hit then
-        changeState("primeira_fase")
-    end
-
     -- Jogar (fase principal)
     if suit.Button("Jogar", bx, by, bw, bh).hit then
-        changeState("terceira_fase")
+        changeState("primeira_fase")
     end
 
     -- Sair
@@ -28,6 +26,13 @@ function Menu.update(dt, changeState)
 end
 
 function Menu.draw()
+    if backgroundImage then
+        love.graphics.draw(backgroundImage, 0, 0, 0,
+            love.graphics.getWidth() / backgroundImage:getWidth(),
+            love.graphics.getHeight() / backgroundImage:getHeight()
+        )
+    end
+
     suit.draw()
 end
 

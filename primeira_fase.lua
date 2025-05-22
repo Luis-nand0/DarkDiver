@@ -164,7 +164,7 @@ function primeira_fase.draw()
   love.graphics.draw(fundoImagem, 0, 0, 0, scaleX, scaleY)
   
   cam:attach()
-
+ 
 
     -- Desenha as camadas do Tiled
     for _, layerName in ipairs({ "fundo", "decoracao" , "espinhos", "floor" }) do
