@@ -57,16 +57,16 @@ function love.load()
     gameOverMenu.load()
     soundTrackMenu = love.audio.newSource("soundEffects/clubbed-to-death-Matrix-soundtrack.mp3", "static")
     fontes.pontoRidiculo = {
-        size40 = love.graphics.newFont("fonts/Ridiculo.ttf",40),
-        size18 = love.graphics.newFont("fonts/Ridiculo.ttf",18)
+        size40 = love.graphics.newFont("fonts/ComicSans.ttf",40),
+        size18 = love.graphics.newFont("fonts/ComicSans.ttf",18)
     }
     fontes.pontosHacker = {
-        size40 = love.graphics.newFont("fonts/hacker.ttf",40),
-        size18 = love.graphics.newFont("fonts/hacker.ttf",18)
+        size40 = love.graphics.newFont("fonts/times.ttf",40),
+        size18 = love.graphics.newFont("fonts/times.ttf",18)
     }
     fontes.pontosArial = {
-        size40 = love.graphics.newFont("fonts/arial.ttf",40),
-        size18 = love.graphics.newFont("fonts/arial.ttf",18)
+        size40 = love.graphics.newFont("fonts/Wingding.ttf",40),
+        size18 = love.graphics.newFont("fonts/Wingding.ttf",18)
     }
 end
 
