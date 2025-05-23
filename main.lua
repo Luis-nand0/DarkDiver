@@ -180,6 +180,7 @@ function love.update(dt)
                 "cutscenes/boss/boss_scene8.png",
                 "cutscenes/boss/boss_scene9.png",
                 "cutscenes/boss/boss_scene10.png",
+                "cutscenes/boss/boss_scene11.png",
                 -- adicione mais imagens conforme necessário
             })
             cutsceneType = "entre2e3"

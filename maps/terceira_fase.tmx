@@ -297,36 +297,43 @@
   <object id="24" x="1599.98" y="383.985" width="96.4969" height="32.3936">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="26" x="1567.21" y="415.985" width="96.4969" height="32.3936">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="27" x="1600.12" y="447.803" width="32.1333" height="32.3936">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="28" x="1760.42" y="255.803" width="128.164" height="64.0603">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="29" x="1792.42" y="305.47" width="64.1636" height="46.7269">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="30" x="1951.75" y="224.47" width="96.4969" height="63.0603">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="31" x="1984.75" y="192.137" width="95.1636" height="63.7269">
    <properties>
     <property name="collidable" type="bool" value="true"/>
+    <property name="isDestrutivel" type="bool" value="true"/>
    </properties>
   </object>
   <object id="32" x="2047.99" y="447.985" width="223.997" height="32.3936">

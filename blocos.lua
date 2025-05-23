@@ -3,7 +3,6 @@ local Blocos = {}
 local blocos = {}
 Blocos.lista = blocos
 
-local spriteBolha = love.graphics.newImage("Spritesheets/bolha_spritesheet.png") -- sprite das bolhas
 
 function Blocos.carregar(world, mapa)
 

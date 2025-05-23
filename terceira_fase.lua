@@ -4,11 +4,7 @@ local Camera      = require "libs.hump.camera"
 local utils       = require "utils"
 local Player      = require "player"
 local Blocos      = require "blocos"
-local Enemy       = require "enemy"
 local Boss        = require "boss"
-local Sentinela   = require "sentinela"
-local Rebatedor   = require "rebatedor"
-local Caranguejo  = require "caranguejo"
 local fonte       = require "fonte"
 local pontos      = require "pontos"
 local youWin = love.audio.newSource("soundEffects/street-fighter-ii-you-win-perfect.mp3", "static")
@@ -121,20 +117,6 @@ function terceira_fase.load()
           boss = e
           table.insert(enemies, e)
 
-        elseif p.isSentinela then
-          local s = Sentinela.new(obj.x, obj.y)
-          s:load(world)
-          table.insert(enemies, s)
-
-        elseif p.isRebatedor then
-          local r = Rebatedor.new(obj.x, obj.y, p)
-          r:load(world)
-          table.insert(enemies, r)
-
-        elseif p.isCaranguejo then
-          local c = Caranguejo.new(obj.x, obj.y, p)
-          c:load(world)
-          table.insert(enemies, c)
         end
       end
     end

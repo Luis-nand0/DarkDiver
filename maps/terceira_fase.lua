@@ -749,7 +749,7 @@ return {
       id = 5,
       name = "walls_3",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -1039,7 +1039,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {
@@ -1054,7 +1055,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {
@@ -1069,7 +1071,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {
@@ -1084,7 +1087,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {
@@ -1099,7 +1103,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {
@@ -1114,7 +1119,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {
@@ -1129,7 +1135,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["collidable"] = true
+            ["collidable"] = true,
+            ["isDestrutivel"] = true
           }
         },
         {

@@ -44,6 +44,13 @@ function Player.new(cam)
 
     self.canPlayerFly = false
 
+    -- Tiro animado
+    self.bulletSpriteSheet = love.graphics.newImage("Spritesheets/player_projeteis_spritesheet.png")
+    self.bulletQuads = {}
+    for i = 0, 3 do
+        self.bulletQuads[i + 1] = love.graphics.newQuad(i * 32, 0, 32, 32, self.bulletSpriteSheet:getDimensions())
+    end
+
     return self
 end
 
@@ -67,7 +74,7 @@ end
 function Player:update(dt, mapa)
     if self.dead or self.reachedExit then return end
 
-    -- Movimento horizontal
+    -- Movimento
     local target = 0
     if love.keyboard.isDown("d", "right") then
         target = self.speed
@@ -91,14 +98,12 @@ function Player:update(dt, mapa)
         end
     end
 
-    -- Pulo
-    local canJump = false
-
     if love.keyboard.wasPressed and love.keyboard.wasPressed("x") then
         self.canPlayerFly = not self.canPlayerFly
         self.canPlayerDie = not self.canPlayerDie
     end
 
+    local canJump = false
     if self.canPlayerFly and love.keyboard.isDown("space", "z") then
         canJump = true
     elseif love.keyboard.isDown("space", "z") and self.isGrounded then
@@ -116,14 +121,13 @@ function Player:update(dt, mapa)
         soundFxJump:play()
     end
 
-    -- Gravidade
     local extraGravity = 0
     if love.keyboard.isDown("s", "down") and not self.isGrounded then
         extraGravity = 1500
     end
     self.vy = self.vy + (self.gravity + extraGravity) * dt
 
-    -- Movimento com colisão
+    -- Colisão
     local goalX = self.x + self.vx * dt
     local goalY = self.y + self.vy * dt
     local actualX, actualY, cols, len = self.world:move(self, goalX, goalY)
@@ -131,7 +135,6 @@ function Player:update(dt, mapa)
 
     self.isGrounded = false
     self.canWallJump = false
-
     local exitFlag = false
 
     for i = 1, len do
@@ -139,7 +142,7 @@ function Player:update(dt, mapa)
         local other = col.other
         local handled = false
 
-        if self.canPlayerDie and other.isCaranguejo or other.isSpike or other.isRebatedor then
+        if self.canPlayerDie and (other.isCaranguejo or other.isSpike or other.isRebatedor) then
             deadSounFx:play()
             self.dead = true
         end
@@ -155,7 +158,6 @@ function Player:update(dt, mapa)
             self.canWallJump = true
             self.wallJumpDirection = other.jumpDirection
             self.sprite = self.sprites[5]
-
             if love.keyboard.isDown("space", "z") then
                 self.vx = (self.wallJumpDirection == "left") and -500 or 500
                 self.vy = -400
@@ -201,11 +203,12 @@ function Player:update(dt, mapa)
         self.shootCooldown = math.max(self.shootCooldown - dt, 0)
     end
 
-    -- Tiros
+    -- Atualiza tiros
     for i = #self.bullets, 1, -1 do
         local b = self.bullets[i]
         b.x = b.x + b.vx * dt
         b.y = b.y + b.vy * dt
+        b.rotation = (b.rotation or 0) + 10 * dt -- incrementa rotação (10 rad/s)
 
         if b.x < -100 or b.x > mapa.width * mapa.tilewidth + 100 or
            b.y < -100 or b.y > mapa.height * mapa.tileheight + 100 then
@@ -213,7 +216,6 @@ function Player:update(dt, mapa)
         end
     end
 
-    -- Animação de corrida
     if math.abs(self.vx) > 10 then
         self.animTimer = self.animTimer + dt
         if self.animTimer >= 0.15 then
@@ -235,7 +237,7 @@ function Player:shoot(screenX, screenY)
     if self.shootCooldown > 0 then return end
 
     local bulletSpeed = 400
-    local size = 8
+    local size = 32
     local px = self.x + self.w / 2
     local py = self.y + self.h / 2
 
@@ -252,7 +254,9 @@ function Player:shoot(screenX, screenY)
         vx = dx * bulletSpeed,
         vy = dy * bulletSpeed,
         w = size,
-        h = size
+        h = size,
+        frame = love.math.random(1, 4),
+        rotation = 0 -- inicia rotação
     })
 
     self.shootCooldown = self.shootRate
@@ -276,14 +280,18 @@ function Player:draw()
         )
     end
 
-  
-
-    -- Tiros
-    love.graphics.setColor(0, 1, 1)
+    -- Desenha os tiros girando com escala 2x
     for _, b in ipairs(self.bullets) do
-        love.graphics.rectangle("fill", b.x, b.y, b.w, b.h)
+        local frame = self.bulletQuads[b.frame]
+        love.graphics.draw(
+            self.bulletSpriteSheet,
+            frame,
+            b.x + b.w / 1.5, b.y + b.h / 1.5,
+            b.rotation or 0,
+            1.5, 1.5,
+            b.w / 1.5, b.h / 1.5
+        )
     end
-    love.graphics.setColor(1, 1, 1)
 end
 
 function Player:getPosition()
