@@ -76,7 +76,8 @@ function Caranguejo:update(dt, player)
     self.x, self.y = actualX, actualY
 
     -- Colisão com o jogador
-    if player.x < self.x + self.width
+    if player.canPlayerDie
+    and player.x < self.x + self.width
     and player.x + player.w > self.x
     and player.y < self.y + self.height
     and player.y + player.h > self.y then

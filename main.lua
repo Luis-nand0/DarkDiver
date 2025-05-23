@@ -16,6 +16,8 @@ local keyBuffer = {}
 local cutscene = nil
 local cutsceneType = nil  -- "intro", "entre2e3", "final"
 
+local fontes = {}
+
 function love.keypressed(key)
     keyBuffer[key] = true
     if gameState == "cutscene" and cutscene then
@@ -51,7 +53,18 @@ function love.load()
     terceira_fase.load()
     menu_respawn.load()
     gameOverMenu.load()
-    FontToPontos = love.graphics.newFont(40)
+    fontes.pontoRidiculo = {
+        size40 = love.graphics.newFont("fonts/Ridiculo.ttf",40),
+        size18 = love.graphics.newFont("fonts/Ridiculo.ttf",18)
+    }
+    fontes.pontosHacker = {
+        size40 = love.graphics.newFont("fonts/hacker.ttf",40),
+        size18 = love.graphics.newFont("fonts/hacker.ttf",18)
+    }
+    fontes.pontosArial = {
+        size40 = love.graphics.newFont("fonts/arial.ttf",40),
+        size18 = love.graphics.newFont("fonts/arial.ttf",18)
+    }
 end
 
 function love.update(dt)
@@ -206,22 +219,19 @@ function love.draw()
         cutscene:draw()
     elseif gameState == "primeira_fase" then
         primeira_fase.draw()
-        FontToPontos = love.graphics.newFont("fonts/Ridiculo.ttf", 40)
-        love.graphics.setFont(FontToPontos)
+        love.graphics.setFont(fontes.pontoRidiculo.size40)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
-        fonte.setar(love.graphics.newFont("fonts/Ridiculo.ttf", 18))
+        fonte.setar(fontes.pontoRidiculo.size18)
     elseif gameState == "segunda_fase" then
         segunda_fase.draw()
-        FontToPontos = love.graphics.newFont("fonts/hacker.ttf", 40)
-        love.graphics.setFont(FontToPontos)
+        love.graphics.setFont(fontes.pontosHacker.size40)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
-        fonte.setar(love.graphics.newFont("fonts/hacker.ttf", 18))
+        fonte.setar(fontes.pontosHacker.size18)
     elseif gameState == "terceira_fase" then
         terceira_fase.draw()
-        FontToPontos = love.graphics.newFont("fonts/arial.ttf", 40)
-        love.graphics.setFont(FontToPontos)
+        love.graphics.setFont(fontes.pontosArial.size40)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
-        fonte.setar(love.graphics.newFont("fonts/arial.ttf", 18))
+        fonte.setar(fontes.pontosArial.size18)
     end
 
     if overlay == "respawn" then

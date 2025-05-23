@@ -70,7 +70,7 @@ function Enemy:update(dt, player)
             self.x, self.y = actualX, actualY
 
             for i = 1, (len or 0) do
-                if cols[i].other == player then
+                if cols[i].other == player and player.canPlayerDie then
                     deadSounFx:play()
                     player.dead = true
                 end

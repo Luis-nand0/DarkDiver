@@ -149,7 +149,7 @@ function Boss:update(dt, player)
             local ax, ay, cols, len = self.world:move(self, goalX, goalY, filter)
             self.x, self.y = ax, ay
             for i=1,len do
-                if cols[i].other==player then
+                if cols[i].other == player and player.canPlayerDie then
                     deadSounFx:play()
                     player.dead = true
                 end
@@ -183,7 +183,7 @@ function Boss:update(dt, player)
         local bw, bh = 16,16
         local bx = b.x + (32-bw)/2
         local by = b.y + (32-bh)/2
-        if checkCollision(bx,by,bw,bh, player.x,player.y,player.w,player.h) then
+        if player.canPlayerDie and checkCollision(bx,by,bw,bh, player.x,player.y,player.w,player.h) then
             player.dead = true
             table.remove(self.bullets, i)
         end

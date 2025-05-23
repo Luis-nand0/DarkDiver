@@ -22,6 +22,7 @@ function Player.new(cam)
     self.isGrounded = false
     self.canWallJump = false
     self.dead = false
+    self.canPlayerDie = true
     self.reachedExit = false
     self.facing = 1
 
@@ -40,6 +41,8 @@ function Player.new(cam)
 
     self.sprites = {}
     self.sprite = nil
+
+    self.canPlayerFly = false
 
     return self
 end
@@ -89,7 +92,20 @@ function Player:update(dt, mapa)
     end
 
     -- Pulo
-    if love.keyboard.isDown("space") and self.isGrounded then
+    local canJump = false
+
+    if love.keyboard.wasPressed and love.keyboard.wasPressed("x") then
+        self.canPlayerFly = not self.canPlayerFly
+        self.canPlayerDie = not self.canPlayerDie
+    end
+
+    if self.canPlayerFly and love.keyboard.isDown("space", "z") then
+        canJump = true
+    elseif love.keyboard.isDown("space", "z") and self.isGrounded then
+        canJump = true
+    end
+
+    if canJump then
         self.vy = -self.jumpForce
         self.isGrounded = false
         self.sprite = self.sprites[3]
@@ -123,7 +139,7 @@ function Player:update(dt, mapa)
         local other = col.other
         local handled = false
 
-        if other.isCaranguejo or other.isSpike or other.isRebatedor then
+        if self.canPlayerDie and other.isCaranguejo or other.isSpike or other.isRebatedor then
             deadSounFx:play()
             self.dead = true
         end
@@ -140,7 +156,7 @@ function Player:update(dt, mapa)
             self.wallJumpDirection = other.jumpDirection
             self.sprite = self.sprites[5]
 
-            if love.keyboard.isDown("space") then
+            if love.keyboard.isDown("space", "z") then
                 self.vx = (self.wallJumpDirection == "left") and -500 or 500
                 self.vy = -400
                 self.canWallJump = false

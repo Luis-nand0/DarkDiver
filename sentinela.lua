@@ -74,7 +74,8 @@ function Sentinela:update(dt, player)
         local bx = b.x + (64 - bw) / 2
         local by = b.y + (64 - bh) / 2
 
-        if bx < px + pw and
+        if player.canPlayerDie and
+           bx < px + pw and
            bx + bw > px and
            by < py + ph and
            by + bh > py then
