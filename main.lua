@@ -18,6 +18,8 @@ local cutsceneType = nil  -- "intro", "entre2e3", "final"
 
 local fontes = {}
 
+local soundTrackMenu = nil
+
 function love.keypressed(key)
     keyBuffer[key] = true
     if gameState == "cutscene" and cutscene then
@@ -53,6 +55,7 @@ function love.load()
     terceira_fase.load()
     menu_respawn.load()
     gameOverMenu.load()
+    soundTrackMenu = love.audio.newSource("soundEffects/clubbed-to-death-Matrix-soundtrack.mp3", "static")
     fontes.pontoRidiculo = {
         size40 = love.graphics.newFont("fonts/Ridiculo.ttf",40),
         size18 = love.graphics.newFont("fonts/Ridiculo.ttf",18)
@@ -215,10 +218,12 @@ end
 
 function love.draw()
     if gameState == "menu" then
+        soundTrackMenu:play()
         menu.draw()
     elseif gameState == "cutscene" and cutscene then
         cutscene:draw()
     elseif gameState == "primeira_fase" then
+        soundTrackMenu:stop()
         primeira_fase.draw()
         love.graphics.setFont(fontes.pontoRidiculo.size40)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
