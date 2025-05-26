@@ -146,6 +146,9 @@ function love.update(dt)
             if cutsceneType == "intro" then
                 primeira_fase.load()
                 gameState = "primeira_fase"
+            elseif cutsceneType == "entre1e2" then
+                segunda_fase.load()
+                gameState = "segunda_fase"
             elseif cutsceneType == "entre2e3" then
                 terceira_fase.load()
                 gameState = "terceira_fase"
@@ -155,6 +158,7 @@ function love.update(dt)
         else
             cutscene:update(dt)
         end
+        
 
     elseif gameState == "primeira_fase" then
         local status = primeira_fase.update(dt)
@@ -162,8 +166,12 @@ function love.update(dt)
             lastPhase = "primeira_fase"
             overlay = "gameover"
         elseif status == "exit" then
-            segunda_fase.load()
-            gameState = "segunda_fase"
+            cutscene = Cutscene.new({
+                "cutscenes/transicao/transicao.png",
+                
+            })
+            cutsceneType = "entre1e2"
+            gameState = "cutscene"
         end
 
     elseif gameState == "segunda_fase" then
@@ -173,6 +181,7 @@ function love.update(dt)
             overlay = "gameover"
         elseif status == "exit" then
             cutscene = Cutscene.new({
+                "cutscenes/boss/boss.png",
                 "cutscenes/boss/boss_scene.png",
                 "cutscenes/boss/boss_scene2.png",
                 "cutscenes/boss/boss_scene3.png",
