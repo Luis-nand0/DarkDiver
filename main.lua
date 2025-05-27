@@ -68,6 +68,10 @@ function love.load()
         size40 = love.graphics.newFont("fonts/Wingding.ttf",40),
         size18 = love.graphics.newFont("fonts/Wingding.ttf",18)
     }
+    fontes.pontoFinal = {
+        size40 = love.graphics.newFont("fonts/arial.ttf",40),
+        size18 = love.graphics.newFont("fonts/arial.ttf",18)
+    }
 end
 
 function love.update(dt)
@@ -221,7 +225,9 @@ function love.update(dt)
             })
             cutsceneType = "final"
             gameState = "cutscene"
-        end
+            love.graphics.setFont(fontes.pontoFinal.size18)
+        
+            end
     end
 end
 

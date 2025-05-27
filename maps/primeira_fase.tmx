@@ -1144,7 +1144,7 @@
     <property name="speed" type="int" value="100"/>
    </properties>
   </object>
-  <object id="405" x="1043.17" y="852.5" width="61.3333" height="44">
+  <object id="405" x="1047.17" y="806.5" width="61.3333" height="44">
    <properties>
     <property name="detectionRadius" type="int" value="250"/>
     <property name="isEnemy" type="bool" value="true"/>
