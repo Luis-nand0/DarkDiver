@@ -20,6 +20,8 @@ local fontes = {}
 
 local soundTrackMenu = nil
 local bossFight = nil
+local primeiraFaseSoundTrack = nil
+local segundaFaseSoundeTrack = nil
 
 function love.keypressed(key)
     keyBuffer[key] = true
@@ -58,6 +60,8 @@ function love.load()
     gameOverMenu.load()
     soundTrackMenu = love.audio.newSource("soundEffects/clubbed-to-death-Matrix-soundtrack.mp3", "static")
     bossFight = love.audio.newSource("soundEffects/bossFight.mp3", "static")
+    primeiraFaseSoundTrack = love.audio.newSource("soundEffects/A-CYBER_S-WORLD.mp3", "static")
+    segundaFaseSoundeTrack = love.audio.newSource("soundEffects/Earthbound-Giygas-Theme.mp3", "static")
     fontes.pontoRidiculo = {
         size40 = love.graphics.newFont("fonts/ComicSans.ttf",40),
         size18 = love.graphics.newFont("fonts/ComicSans.ttf",18)
@@ -235,17 +239,21 @@ function love.draw()
     elseif gameState == "cutscene" and cutscene then
         cutscene:draw()
     elseif gameState == "primeira_fase" then
-        soundTrackMenu:stop()
+        soundTrackMenu:pause()
+        primeiraFaseSoundTrack:play()
         primeira_fase.draw()
         love.graphics.setFont(fontes.pontoRidiculo.size40)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
         fonte.setar(fontes.pontoRidiculo.size18)
     elseif gameState == "segunda_fase" then
+        primeiraFaseSoundTrack:stop()
+        segundaFaseSoundeTrack:play()
         segunda_fase.draw()
         love.graphics.setFont(fontes.pontosHacker.size40)
         love.graphics.print("Pontos: " .. Pontos.get(), 10, 10)
         fonte.setar(fontes.pontosHacker.size18)
     elseif gameState == "terceira_fase" then
+        segundaFaseSoundeTrack:stop()
         bossFight:play()
         terceira_fase.draw()
         love.graphics.setFont(fontes.pontosArial.size40)
